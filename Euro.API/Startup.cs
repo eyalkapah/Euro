@@ -28,6 +28,8 @@ namespace Euro.API
         {
             services.AddControllers();
 
+            services.ConfigureRepositories();
+            services.ConfigureUnitOfWork();
             services.AddConnectionProvider(Configuration);
         }
 
