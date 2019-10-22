@@ -1,4 +1,5 @@
 ﻿using Euro.Context.Configurations;
+using Euro.Context.Migrations.Seeders;
 using Euro.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,10 @@ namespace Euro.Context
             builder.ApplyConfiguration(new TeamConfiguration());
             builder.ApplyConfiguration(new GroupConfiguration());
             builder.ApplyConfiguration(new MatchConfiguration());
+
+            builder.SeedGroups();
+            builder.SeedTeams();
+            builder.SeedMatches();
         }
     }
 }

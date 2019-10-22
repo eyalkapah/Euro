@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Euro.Data.Repositories
@@ -104,5 +105,7 @@ namespace Euro.Data.Repositories
         {
             return Set.ToList();
         }
+
+        public async Task<List<TEntity>> GetAllAsync(CancellationToken token = default) => await Set.AsNoTracking().ToListAsync(token);
     }
 }

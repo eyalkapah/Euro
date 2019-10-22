@@ -16,6 +16,5 @@ namespace Euro.Domain
 
         public int GroupId { get; set; }
         public ICollection<Match> Matches { get; set; } = new HashSet<Match>();
-        public bool IsHostTeam { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using Euro.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Euro.Context.Migrations
 {
     [DbContext(typeof(EuroContext))]
-    partial class EuroContextModelSnapshot : ModelSnapshot
+    [Migration("20191022121232_SeedAllTeams")]
+    partial class SeedAllTeams
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,98 +124,6 @@ namespace Euro.Context.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("Matches");
-
-                    b.HasData(
-                        new
-                        {
-                            MatchId = 1,
-                            GuestScored = 0,
-                            GuestTeamId = 7,
-                            HostScored = 3,
-                            HostTeamId = 6,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 2,
-                            GuestScored = 0,
-                            GuestTeamId = 9,
-                            HostScored = 5,
-                            HostTeamId = 8,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 3,
-                            GuestScored = 0,
-                            GuestTeamId = 11,
-                            HostScored = 2,
-                            HostTeamId = 10,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 4,
-                            GuestScored = 0,
-                            GuestTeamId = 13,
-                            HostScored = 4,
-                            HostTeamId = 12,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 5,
-                            GuestScored = 0,
-                            GuestTeamId = 15,
-                            HostScored = 2,
-                            HostTeamId = 14,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 6,
-                            GuestScored = 1,
-                            GuestTeamId = 17,
-                            HostScored = 2,
-                            HostTeamId = 16,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 7,
-                            GuestScored = 1,
-                            GuestTeamId = 19,
-                            HostScored = 1,
-                            HostTeamId = 18,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 8,
-                            GuestScored = 1,
-                            GuestTeamId = 21,
-                            HostScored = 3,
-                            HostTeamId = 20,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 9,
-                            GuestScored = 1,
-                            GuestTeamId = 23,
-                            HostScored = 0,
-                            HostTeamId = 22,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MatchId = 10,
-                            GuestScored = 1,
-                            GuestTeamId = 25,
-                            HostScored = 3,
-                            HostTeamId = 24,
-                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Euro.Domain.Team", b =>

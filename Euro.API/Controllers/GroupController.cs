@@ -1,10 +1,12 @@
 ﻿using Euro.Data;
+using Euro.Domain.ApiModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Euro.API.Controllers
@@ -22,11 +24,13 @@ namespace Euro.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<GroupApiModel>>> Get(CancellationToken token = default)
         {
             try
             {
-                return Ok(_unitOfWork.Groups.GetAll());
+                var apiModels = await _unitOfWork.Groups.GetAllGroupsAsync(token);
+
+                return Ok(apiModels);
             }
             catch (Exception ex)
             {

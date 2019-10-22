@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Euro.Domain.Interfaces.Repositories
@@ -34,5 +35,7 @@ namespace Euro.Domain.Interfaces.Repositories
         IEnumerable<TEntity> GetAll();
 
         void Update(TEntity item);
+
+        Task<List<TEntity>> GetAllAsync(CancellationToken token = default);
     }
 }
