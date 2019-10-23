@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Euro.Context;
 using Euro.Domain.Interfaces.Repositories;
 
@@ -21,9 +23,6 @@ namespace Euro.Data
             Groups = groupRepository;
         }
 
-        public bool Save()
-        {
-            return _context.SaveChanges() > 0;
-        }
+        public async Task<bool> SaveAsync(CancellationToken token = default) => await _context.SaveChangesAsync(token) > 0;
     }
 }

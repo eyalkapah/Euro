@@ -13,7 +13,7 @@ namespace Euro.API.Configurations
     {
         public MappingProfile()
         {
-            CreateMap<Group, GroupApiModel>();
+            CreateMap<Group, GroupApiModel>().ReverseMap();
         }
     }
 }

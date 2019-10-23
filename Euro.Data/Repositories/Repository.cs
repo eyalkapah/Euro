@@ -1,6 +1,7 @@
 ﻿using Euro.Context;
 using Euro.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,5 +108,11 @@ namespace Euro.Data.Repositories
         }
 
         public async Task<List<TEntity>> GetAllAsync(CancellationToken token = default) => await Set.AsNoTracking().ToListAsync(token);
+
+        public async Task<TEntity> FindAsync(CancellationToken token = default, params object[] keyValues) => await Set.FindAsync(keyValues, token);
+
+        public async Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) => await Set.AsNoTracking().AnyAsync(predicate, token);
+
+        public async ValueTask<EntityEntry<TEntity>> AddAsync(TEntity entity, CancellationToken token = default) => await Set.AddAsync(entity, token);
     }
 }
