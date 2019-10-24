@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Euro.Data;
+using Euro.Domain;
 using Euro.Domain.ApiModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -32,9 +33,11 @@ namespace Euro.API.Controllers
         {
             try
             {
-                var apiModels = await _unitOfWork.Groups.GetAllGroupsAsync(token);
+                var groups = await _unitOfWork.Groups.GetAllGroupsAsync(token);
 
-                return Ok(apiModels);
+                var groupApiModels = _mapper.Map<IEnumerable<GroupApiModel>>(groups);
+
+                return Ok(groupApiModels);
             }
             catch (Exception ex)
             {
@@ -55,7 +58,9 @@ namespace Euro.API.Controllers
                     return NotFound();
                 }
 
-                return Ok(group);
+                var groupApiModel = _mapper.Map<GroupApiModel>(group);
+
+                return Ok(groupApiModel);
             }
             catch (Exception ex)
             {
@@ -76,16 +81,16 @@ namespace Euro.API.Controllers
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var group = await _unitOfWork.Groups.AddGroupAsync(input, token);
+                var group = _mapper.Map<Group>(input);
+
+                await _unitOfWork.Groups.AddGroupAsync(group, token);
 
                 if (!await _unitOfWork.SaveAsync(token))
                 {
                     throw new Exception("Failed to save group.");
                 }
 
-                var groupApiModel = _mapper.Map<GroupApiModel>(group);
-
-                return CreatedAtRoute("GetGroup", new { id = group.GroupId }, groupApiModel);
+                return CreatedAtRoute("GetGroup", new { id = group.GroupId });
             }
             catch (Exception ex)
             {
@@ -109,16 +114,16 @@ namespace Euro.API.Controllers
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var group = await _unitOfWork.Groups.UpdateGroupAsync(id, input, token);
+                var group = _mapper.Map<Group>(input);
 
-                var groupApiModel = _mapper.Map<GroupApiModel>(group);
+                group = await _unitOfWork.Groups.UpdateGroupAsync(id, group, token);
 
                 if (!await _unitOfWork.SaveAsync(token))
                 {
                     throw new Exception("Failed to save group.");
                 }
 
-                return Ok(groupApiModel);
+                return CreatedAtRoute("GetGroup", new { id = group.GroupId });
             }
             catch (Exception ex)
             {
@@ -127,7 +132,7 @@ namespace Euro.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id, CancellationToken token = default)
         {
             try
             {
@@ -136,7 +141,18 @@ namespace Euro.API.Controllers
                     return NotFound();
                 }
 
-                if
+                _unitOfWork.Groups.Delete(id);
+
+                if (!await _unitOfWork.SaveAsync(token))
+                {
+                    throw new Exception("Failed to save group.");
+                }
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
     }

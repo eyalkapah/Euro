@@ -16,30 +16,14 @@ namespace Euro.Data.Repositories
 {
     public class GroupRepository : Repository<Group>, IGroupRepository
     {
-        private readonly IMapper _mapper;
         private readonly IMemoryCache _cache;
 
-        public GroupRepository(EuroContext context, IMapper mapper, IMemoryCache cache) : base(context)
+        public GroupRepository(EuroContext context, IMemoryCache cache) : base(context)
         {
-            _mapper = mapper;
             _cache = cache;
         }
 
-        public async Task<Group> AddGroupAsync(GroupApiModel input, CancellationToken token)
-        {
-            if (await IsExistsAsync(g => g.Name.ToLower() == input.Name.ToLower()))
-            {
-                throw new DuplicateValueException(nameof(input.Name), input.Name);
-            }
-
-            var group = _mapper.Map<Group>(input);
-
-            await AddAsync(group, token);
-
-            return group;
-        }
-
-        public async Task<IEnumerable<GroupApiModel>> GetAllGroupsAsync(CancellationToken token = default)
+        public async Task<IEnumerable<Group>> GetAllGroupsAsync(CancellationToken token = default)
         {
             var groups = await GetAllAsync(token);
 
@@ -50,42 +34,46 @@ namespace Euro.Data.Repositories
                 _cache.Set(group.GroupId, group, cacheEntryOptions);
             }
 
-            var groupApiModels = _mapper.Map<IEnumerable<GroupApiModel>>(groups);
-
-            return groupApiModels;
+            return groups;
         }
 
-        public async Task<GroupApiModel> GetGroupByIdAsync(int id, CancellationToken token = default)
+        public async Task<Group> GetGroupByIdAsync(int id, CancellationToken token = default)
         {
             var group = _cache.Get<Group>(id);
 
             if (group != null)
             {
-                var groupApiModel = _mapper.Map<GroupApiModel>(group);
-                return groupApiModel;
+                return group;
             }
             else
             {
                 group = await FindAsync(token, id);
 
-                var groupApiModel = _mapper.Map<GroupApiModel>(group);
-
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(604800));
 
-                _cache.Set(groupApiModel.GroupId, group, cacheEntryOptions);
+                _cache.Set(id, group, cacheEntryOptions);
 
-                return groupApiModel;
+                return group;
             }
         }
 
-        public async Task<Group> UpdateGroupAsync(int id, GroupApiModel input, CancellationToken token)
+        public async Task AddGroupAsync(Group group, CancellationToken token)
         {
-            var group = await GetAsync(token, id);
+            if (await IsExistsAsync(g => g.Name.ToLower() == group.Name.ToLower()))
+            {
+                throw new DuplicateValueException(nameof(group.Name), group.Name);
+            }
 
-            if (group == null)
-                throw new KeyNotFoundException();
+            await AddAsync(group, token);
+        }
 
-            group = _mapper.Map(input, group);
+        public async Task<Group> UpdateGroupAsync(int id, Group group, CancellationToken token = default)
+        {
+            if (await IsExistsAsync(g => g.Name.ToLower() == group.Name.ToLower() && g.GroupId != id, token))
+            {
+                throw new AlreadyExistsException(group.Name);
+            }
+
             group.GroupId = id;
 
             Update(group);

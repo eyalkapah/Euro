@@ -10,12 +10,12 @@ namespace Euro.Domain.Interfaces.Repositories
 {
     public interface IGroupRepository : IRepository<Group>
     {
-        Task<IEnumerable<GroupApiModel>> GetAllGroupsAsync(CancellationToken token = default);
+        Task<IEnumerable<Group>> GetAllGroupsAsync(CancellationToken token = default);
 
-        Task<GroupApiModel> GetGroupByIdAsync(int id, CancellationToken token = default);
+        Task<Group> GetGroupByIdAsync(int id, CancellationToken token = default);
 
-        Task<Group> AddGroupAsync(GroupApiModel input, CancellationToken token);
+        Task AddGroupAsync(Group input, CancellationToken token);
 
-        Task<Group> UpdateGroupAsync(int id, GroupApiModel group, CancellationToken token);
+        Task<Group> UpdateGroupAsync(int id, Group group, CancellationToken token = default);
     }
 }

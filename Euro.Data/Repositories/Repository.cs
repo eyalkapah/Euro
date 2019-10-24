@@ -43,33 +43,26 @@ namespace Euro.Data.Repositories
             return Set.AsQueryable().Any(predicate);
         }
 
-        public bool Delete(object[] keyValues)
+        public void Delete(object[] keyValues)
         {
             var item = Find(keyValues);
 
             if (item == null)
-                return false;
+                throw new KeyNotFoundException();
 
-            _context.Entry(item).State = EntityState.Deleted;
-
-            return true;
+            Set.Remove(item);
         }
 
-        public void Delete(TEntity item)
-        {
-            _context.Entry(item).State = EntityState.Deleted;
-        }
+        public void Delete(TEntity item) => Set.Remove(item);
 
-        public bool Delete<TKey>(TKey key)
+        public void Delete<TKey>(TKey key)
         {
             var item = Find(key);
 
             if (item == null)
-                return false;
+                throw new KeyNotFoundException();
 
-            _context.Entry(item).State = EntityState.Deleted;
-
-            return true;
+            Set.Remove(item);
         }
 
         public TEntity Find(params object[] keyValues)

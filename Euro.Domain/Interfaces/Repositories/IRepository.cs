@@ -17,11 +17,11 @@ namespace Euro.Domain.Interfaces.Repositories
 
         bool Any(Expression<Func<TEntity, bool>> predicate);
 
-        bool Delete(object[] keyValues);
+        void Delete(object[] keyValues);
 
         void Delete(TEntity item);
 
-        bool Delete<TKey>(TKey key);
+        void Delete<TKey>(TKey key);
 
         TEntity Find(params object[] keyValues);
 
