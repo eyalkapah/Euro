@@ -16,15 +16,10 @@ namespace Euro.API.Controllers
     [Route("api/[controller]")]
     //[EnableCors("CorsPolicy")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class GroupController : BaseController
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public GroupController(IUnitOfWork unitOfWork, IMapper mapper)
+        public GroupController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -33,9 +28,9 @@ namespace Euro.API.Controllers
         {
             try
             {
-                var groups = await _unitOfWork.Groups.GetAllGroupsAsync(token);
+                var groups = await UnitOfWork.Groups.GetAllGroupsAsync(token);
 
-                var groupApiModels = _mapper.Map<IEnumerable<GroupApiModel>>(groups);
+                var groupApiModels = Mapper.Map<IEnumerable<GroupApiModel>>(groups);
 
                 return Ok(groupApiModels);
             }
@@ -51,14 +46,14 @@ namespace Euro.API.Controllers
         {
             try
             {
-                var group = await _unitOfWork.Groups.GetGroupByIdAsync(id, token);
+                var group = await UnitOfWork.Groups.GetGroupByIdAsync(id, token);
 
                 if (group == null)
                 {
                     return NotFound();
                 }
 
-                var groupApiModel = _mapper.Map<GroupApiModel>(group);
+                var groupApiModel = Mapper.Map<GroupApiModel>(group);
 
                 return Ok(groupApiModel);
             }
@@ -74,23 +69,24 @@ namespace Euro.API.Controllers
             try
             {
                 if (input == null)
+                {
                     return BadRequest();
+                }
 
                 if (!ModelState.IsValid)
                 {
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var group = _mapper.Map<Group>(input);
+                var group = Mapper.Map<Group>(input);
 
-                await _unitOfWork.Groups.AddGroupAsync(group, token);
+                await UnitOfWork.Groups.AddGroupAsync(group, token);
 
-                if (!await _unitOfWork.SaveAsync(token))
-                {
-                    throw new Exception("Failed to save group.");
-                }
+                await SaveAsync(token);
 
-                return CreatedAtRoute("GetGroup", new { id = group.GroupId });
+                var output = Mapper.Map<GroupApiModel>(group);
+
+                return CreatedAtRoute("GetGroup", new { id = group.GroupId }, output);
             }
             catch (Exception ex)
             {
@@ -104,26 +100,29 @@ namespace Euro.API.Controllers
             try
             {
                 if (input == null)
+                {
                     return BadRequest();
+                }
 
-                if (await _unitOfWork.Groups.GetGroupByIdAsync(id) == null)
+                if (await UnitOfWork.Groups.GetGroupByIdAsync(id) == null)
+                {
                     return NotFound();
+                }
 
                 if (!ModelState.IsValid)
                 {
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var group = _mapper.Map<Group>(input);
+                var group = Mapper.Map<Group>(input);
 
-                group = await _unitOfWork.Groups.UpdateGroupAsync(id, group, token);
+                await UnitOfWork.Groups.UpdateGroupAsync(id, group, token);
 
-                if (!await _unitOfWork.SaveAsync(token))
-                {
-                    throw new Exception("Failed to save group.");
-                }
+                await SaveAsync(token);
 
-                return CreatedAtRoute("GetGroup", new { id = group.GroupId });
+                var output = Mapper.Map<GroupApiModel>(group);
+
+                return CreatedAtRoute("GetGroup", new { id = group.GroupId }, output);
             }
             catch (Exception ex)
             {
@@ -136,17 +135,14 @@ namespace Euro.API.Controllers
         {
             try
             {
-                if (await _unitOfWork.Groups.GetGroupByIdAsync(id) == null)
+                if (await UnitOfWork.Groups.GetGroupByIdAsync(id) == null)
                 {
                     return NotFound();
                 }
 
-                _unitOfWork.Groups.Delete(id);
+                UnitOfWork.Groups.Delete(id);
 
-                if (!await _unitOfWork.SaveAsync(token))
-                {
-                    throw new Exception("Failed to save group.");
-                }
+                await SaveAsync(token);
 
                 return NoContent();
             }

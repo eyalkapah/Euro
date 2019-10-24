@@ -43,28 +43,6 @@ namespace Euro.Data.Repositories
             return Set.AsQueryable().Any(predicate);
         }
 
-        public void Delete(object[] keyValues)
-        {
-            var item = Find(keyValues);
-
-            if (item == null)
-                throw new KeyNotFoundException();
-
-            Set.Remove(item);
-        }
-
-        public void Delete(TEntity item) => Set.Remove(item);
-
-        public void Delete<TKey>(TKey key)
-        {
-            var item = Find(key);
-
-            if (item == null)
-                throw new KeyNotFoundException();
-
-            Set.Remove(item);
-        }
-
         public TEntity Find(params object[] keyValues)
         {
             return Set.Find(keyValues);
@@ -100,16 +78,38 @@ namespace Euro.Data.Repositories
             return Set.ToList();
         }
 
-        public async Task<List<TEntity>> GetAllAsync(CancellationToken token = default) => await Set.AsNoTracking().ToListAsync(token);
+        protected async Task<List<TEntity>> GetAllAsync(CancellationToken token = default) => await Set.AsNoTracking().ToListAsync(token);
 
-        public async Task<TEntity> FindAsync(CancellationToken token = default, params object[] keyValues) => await Set.FindAsync(keyValues, token);
+        protected async Task<TEntity> FindAsync(CancellationToken token = default, params object[] keyValues) => await Set.FindAsync(keyValues, token);
 
-        public async Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) => await Set.AsNoTracking().AnyAsync(predicate, token);
+        protected async Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) => await Set.AsNoTracking().AnyAsync(predicate, token);
 
-        public async ValueTask<EntityEntry<TEntity>> AddAsync(TEntity entity, CancellationToken token = default) => await Set.AddAsync(entity, token);
+        protected async ValueTask<EntityEntry<TEntity>> AddAsync(TEntity entity, CancellationToken token = default) => await Set.AddAsync(entity, token);
 
-        public async ValueTask<TEntity> GetAsync(CancellationToken token = default, params object[] keyValues) => await Set.FindAsync(keyValues, token);
+        protected async ValueTask<TEntity> GetAsync(CancellationToken token = default, params object[] keyValues) => await Set.FindAsync(keyValues, token);
 
-        public EntityEntry<TEntity> Update(TEntity entity) => Set.Update(entity);
+        protected EntityEntry<TEntity> Update(TEntity entity) => Set.Update(entity);
+
+        public void Delete(object[] keyValues)
+        {
+            var item = Find(keyValues);
+
+            if (item == null)
+                throw new KeyNotFoundException();
+
+            Set.Remove(item);
+        }
+
+        public void Delete(TEntity item) => Set.Remove(item);
+
+        public void Delete<TKey>(TKey key)
+        {
+            var item = Find(key);
+
+            if (item == null)
+                throw new KeyNotFoundException();
+
+            Set.Remove(item);
+        }
     }
 }

@@ -16,6 +16,6 @@ namespace Euro.Domain.Interfaces.Repositories
 
         Task AddGroupAsync(Group input, CancellationToken token);
 
-        Task<Group> UpdateGroupAsync(int id, Group group, CancellationToken token = default);
+        Task UpdateGroupAsync(int id, Group group, CancellationToken token = default);
     }
 }

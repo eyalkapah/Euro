@@ -37,16 +37,16 @@ namespace Euro.Domain.Interfaces.Repositories
 
         //void Update(TEntity item);
 
-        Task<List<TEntity>> GetAllAsync(CancellationToken token = default);
+        //Task<List<TEntity>> GetAllAsync(CancellationToken token = default);
 
-        Task<TEntity> FindAsync(CancellationToken token = default, params object[] keyValues);
+        //Task<TEntity> FindAsync(CancellationToken token = default, params object[] keyValues);
 
-        Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default);
+        //Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default);
 
-        ValueTask<EntityEntry<TEntity>> AddAsync(TEntity entity, CancellationToken token = default);
+        //ValueTask<EntityEntry<TEntity>> AddAsync(TEntity entity, CancellationToken token = default);
 
-        ValueTask<TEntity> GetAsync(CancellationToken token = default, params object[] keyValues);
+        //ValueTask<TEntity> GetAsync(CancellationToken token = default, params object[] keyValues);
 
-        EntityEntry<TEntity> Update(TEntity entity);
+        //EntityEntry<TEntity> Update(TEntity entity);
     }
 }

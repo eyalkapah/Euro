@@ -67,7 +67,7 @@ namespace Euro.Data.Repositories
             await AddAsync(group, token);
         }
 
-        public async Task<Group> UpdateGroupAsync(int id, Group group, CancellationToken token = default)
+        public async Task UpdateGroupAsync(int id, Group group, CancellationToken token = default)
         {
             if (await IsExistsAsync(g => g.Name.ToLower() == group.Name.ToLower() && g.GroupId != id, token))
             {
@@ -77,8 +77,6 @@ namespace Euro.Data.Repositories
             group.GroupId = id;
 
             Update(group);
-
-            return group;
         }
     }
 }
