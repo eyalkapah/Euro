@@ -16,7 +16,7 @@ namespace Euro.API.Controllers
     [Route("api/[controller]")]
     //[EnableCors("CorsPolicy")]
     [ApiController]
-    public class GroupController : BaseController
+    public class GroupController : BaseController<Group, GroupApiModel>
     {
         public GroupController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
@@ -24,7 +24,7 @@ namespace Euro.API.Controllers
 
         [HttpGet]
         [Produces(typeof(List<GroupApiModel>))]
-        public async Task<ActionResult<IEnumerable<GroupApiModel>>> Get(CancellationToken token = default)
+        public override async Task<ActionResult<IEnumerable<GroupApiModel>>> Get(CancellationToken token = default)
         {
             try
             {

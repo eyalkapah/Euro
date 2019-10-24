@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using Euro.Context;
+﻿using Euro.Context;
 using Euro.Data.Exceptiona;
 using Euro.Domain;
-using Euro.Domain.ApiModels;
 using Euro.Domain.Interfaces.Repositories;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,11 +12,8 @@ namespace Euro.Data.Repositories
 {
     public class GroupRepository : Repository<Group>, IGroupRepository
     {
-        private readonly IMemoryCache _cache;
-
-        public GroupRepository(EuroContext context, IMemoryCache cache) : base(context)
+        public GroupRepository(EuroContext context, IMemoryCache cache) : base(context, cache)
         {
-            _cache = cache;
         }
 
         public async Task<IEnumerable<Group>> GetAllGroupsAsync(CancellationToken token = default)
@@ -31,7 +24,7 @@ namespace Euro.Data.Repositories
             {
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(604800));
 
-                _cache.Set(group.GroupId, group, cacheEntryOptions);
+                Cache.Set(group.GroupId, group, cacheEntryOptions);
             }
 
             return groups;
@@ -39,7 +32,7 @@ namespace Euro.Data.Repositories
 
         public async Task<Group> GetGroupByIdAsync(int id, CancellationToken token = default)
         {
-            var group = _cache.Get<Group>(id);
+            var group = Cache.Get<Group>(id);
 
             if (group != null)
             {
@@ -51,7 +44,7 @@ namespace Euro.Data.Repositories
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(604800));
 
-                _cache.Set(id, group, cacheEntryOptions);
+                Cache.Set(id, group, cacheEntryOptions);
 
                 return group;
             }

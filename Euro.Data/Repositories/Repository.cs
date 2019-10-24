@@ -2,6 +2,7 @@
 using Euro.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,14 @@ namespace Euro.Data.Repositories
     {
         private readonly EuroContext _context;
         protected DbSet<TEntity> Set { get; }
+        protected IMemoryCache Cache { get; }
 
         // C'tor
         //
-        public Repository(EuroContext context)
+        public Repository(EuroContext context, IMemoryCache cache)
         {
             _context = context;
+            Cache = cache;
 
             Set = context.Set<TEntity>();
         }
