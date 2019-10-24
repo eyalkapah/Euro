@@ -27,7 +27,7 @@ namespace Euro.Data.Repositories
 
         public async Task<Group> AddGroupAsync(GroupApiModel input, CancellationToken token)
         {
-            if (await IsExistsAsync(g => g.Name.Equals(input.Name, StringComparison.CurrentCultureIgnoreCase)))
+            if (await IsExistsAsync(g => g.Name.ToLower() == input.Name.ToLower()))
             {
                 throw new DuplicateValueException(nameof(input.Name), input.Name);
             }
@@ -76,6 +76,21 @@ namespace Euro.Data.Repositories
 
                 return groupApiModel;
             }
+        }
+
+        public async Task<Group> UpdateGroupAsync(int id, GroupApiModel input, CancellationToken token)
+        {
+            var group = await GetAsync(token, id);
+
+            if (group == null)
+                throw new KeyNotFoundException();
+
+            group = _mapper.Map(input, group);
+            group.GroupId = id;
+
+            Update(group);
+
+            return group;
         }
     }
 }

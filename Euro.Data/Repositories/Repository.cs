@@ -97,10 +97,10 @@ namespace Euro.Data.Repositories
             return Set;
         }
 
-        public void Update(TEntity item)
-        {
-            _context.Entry(item).State = EntityState.Modified;
-        }
+        //public void Update(TEntity item)
+        //{
+        //    _context.Entry(item).State = EntityState.Modified;
+        //}
 
         public IEnumerable<TEntity> GetAll()
         {
@@ -114,5 +114,9 @@ namespace Euro.Data.Repositories
         public async Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default) => await Set.AsNoTracking().AnyAsync(predicate, token);
 
         public async ValueTask<EntityEntry<TEntity>> AddAsync(TEntity entity, CancellationToken token = default) => await Set.AddAsync(entity, token);
+
+        public async ValueTask<TEntity> GetAsync(CancellationToken token = default, params object[] keyValues) => await Set.FindAsync(keyValues, token);
+
+        public EntityEntry<TEntity> Update(TEntity entity) => Set.Update(entity);
     }
 }

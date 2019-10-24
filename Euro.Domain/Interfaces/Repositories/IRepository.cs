@@ -35,7 +35,7 @@ namespace Euro.Domain.Interfaces.Repositories
 
         IEnumerable<TEntity> GetAll();
 
-        void Update(TEntity item);
+        //void Update(TEntity item);
 
         Task<List<TEntity>> GetAllAsync(CancellationToken token = default);
 
@@ -44,5 +44,9 @@ namespace Euro.Domain.Interfaces.Repositories
         Task<bool> IsExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default);
 
         ValueTask<EntityEntry<TEntity>> AddAsync(TEntity entity, CancellationToken token = default);
+
+        ValueTask<TEntity> GetAsync(CancellationToken token = default, params object[] keyValues);
+
+        EntityEntry<TEntity> Update(TEntity entity);
     }
 }

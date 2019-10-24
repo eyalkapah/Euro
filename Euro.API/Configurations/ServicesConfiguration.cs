@@ -21,5 +21,11 @@ namespace Euro.API.Configurations
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
+
+        public static void AddCaching(this IServiceCollection services)
+        {
+            services.AddMemoryCache();
+            services.AddResponseCaching();
+        }
     }
 }

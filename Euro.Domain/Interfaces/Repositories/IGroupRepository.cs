@@ -15,5 +15,7 @@ namespace Euro.Domain.Interfaces.Repositories
         Task<GroupApiModel> GetGroupByIdAsync(int id, CancellationToken token = default);
 
         Task<Group> AddGroupAsync(GroupApiModel input, CancellationToken token);
+
+        Task<Group> UpdateGroupAsync(int id, GroupApiModel group, CancellationToken token);
     }
 }

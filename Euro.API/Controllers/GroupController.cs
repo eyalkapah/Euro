@@ -85,11 +85,58 @@ namespace Euro.API.Controllers
 
                 var groupApiModel = _mapper.Map<GroupApiModel>(group);
 
-                return CreatedAtRoute("GetGroup", new { groupId = group.GroupId }, groupApiModel);
+                return CreatedAtRoute("GetGroup", new { id = group.GroupId }, groupApiModel);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<GroupApiModel>> Put(int id, [FromBody] GroupApiModel input, CancellationToken token = default)
+        {
+            try
+            {
+                if (input == null)
+                    return BadRequest();
+
+                if (await _unitOfWork.Groups.GetGroupByIdAsync(id) == null)
+                    return NotFound();
+
+                if (!ModelState.IsValid)
+                {
+                    return new UnprocessableEntityObjectResult(ModelState);
+                }
+
+                var group = await _unitOfWork.Groups.UpdateGroupAsync(id, input, token);
+
+                var groupApiModel = _mapper.Map<GroupApiModel>(group);
+
+                if (!await _unitOfWork.SaveAsync(token))
+                {
+                    throw new Exception("Failed to save group.");
+                }
+
+                return Ok(groupApiModel);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async ActionResult Delete(int id)
+        {
+            try
+            {
+                if (await _unitOfWork.Groups.GetGroupByIdAsync(id) == null)
+                {
+                    return NotFound();
+                }
+
+                if
             }
         }
     }
