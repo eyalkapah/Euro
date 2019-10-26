@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Euro.Data;
+using Euro.Data.Exceptiona;
 using Euro.Domain;
 using Euro.Domain.ApiModels;
+using Euro.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,138 +20,59 @@ namespace Euro.API.Controllers
     [ApiController]
     public class GroupController : BaseController<Group, GroupApiModel>
     {
+        //public IGroupRepository<Group> Repository { get; }
+
         public GroupController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
+            Repository = unitOfWork.Groups;
+        }
+
+        [HttpDelete("{id}")]
+        public new Task<ActionResult> Delete(int id, CancellationToken token = default)
+        {
+            return base.Delete(id, token);
         }
 
         [HttpGet]
         [Produces(typeof(List<GroupApiModel>))]
-        public override async Task<ActionResult<IEnumerable<GroupApiModel>>> Get(CancellationToken token = default)
+        public new Task<ActionResult<IEnumerable<GroupApiModel>>> Get(CancellationToken token = default)
         {
-            try
-            {
-                var groups = await UnitOfWork.Groups.GetAllGroupsAsync(token);
-
-                var groupApiModels = Mapper.Map<IEnumerable<GroupApiModel>>(groups);
-
-                return Ok(groupApiModels);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            return base.Get(token);
         }
 
         [HttpGet("{id}", Name = "GetGroup")]
         [Produces(typeof(GroupApiModel))]
-        public async Task<ActionResult<GroupApiModel>> Get(int id, CancellationToken token = default)
+        public new Task<ActionResult<GroupApiModel>> Get(int id, CancellationToken token = default)
         {
-            try
-            {
-                var group = await UnitOfWork.Groups.GetGroupByIdAsync(id, token);
-
-                if (group == null)
-                {
-                    return NotFound();
-                }
-
-                var groupApiModel = Mapper.Map<GroupApiModel>(group);
-
-                return Ok(groupApiModel);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+            return base.Get(id, token);
         }
 
         [HttpPost]
-        public async Task<ActionResult<GroupApiModel>> Post([FromBody] GroupApiModel input, CancellationToken token = default)
+        public new async Task<ActionResult<GroupApiModel>> Post([FromBody] GroupApiModel input, CancellationToken token = default)
         {
-            try
+            var output = await base.Post(input, token);
+
+            if (output is OkObjectResult okResult)
             {
-                if (input == null)
-                {
-                    return BadRequest();
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return new UnprocessableEntityObjectResult(ModelState);
-                }
-
-                var group = Mapper.Map<Group>(input);
-
-                await UnitOfWork.Groups.AddGroupAsync(group, token);
-
-                await SaveAsync(token);
-
-                var output = Mapper.Map<GroupApiModel>(group);
-
-                return CreatedAtRoute("GetGroup", new { id = group.GroupId }, output);
+                return CreatedAtRoute("GetGroup", new { id = ((GroupApiModel)okResult.Value).GroupId }, okResult.Value);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+
+            return output;
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<GroupApiModel>> Put(int id, [FromBody] GroupApiModel input, CancellationToken token = default)
+        public new async Task<ActionResult<GroupApiModel>> Put(int id, [FromBody] GroupApiModel input, CancellationToken token = default)
         {
-            try
+            var output = await base.Put(id, input, token);
+
+            //(Group entity, GroupApiModel apiModel) = output.ReplyData;
+
+            if (output is OkObjectResult okResult)
             {
-                if (input == null)
-                {
-                    return BadRequest();
-                }
-
-                if (await UnitOfWork.Groups.GetGroupByIdAsync(id) == null)
-                {
-                    return NotFound();
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return new UnprocessableEntityObjectResult(ModelState);
-                }
-
-                var group = Mapper.Map<Group>(input);
-
-                await UnitOfWork.Groups.UpdateGroupAsync(id, group, token);
-
-                await SaveAsync(token);
-
-                var output = Mapper.Map<GroupApiModel>(group);
-
-                return CreatedAtRoute("GetGroup", new { id = group.GroupId }, output);
+                return CreatedAtRoute("GetGroup", new { id }, okResult.Value);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id, CancellationToken token = default)
-        {
-            try
-            {
-                if (await UnitOfWork.Groups.GetGroupByIdAsync(id) == null)
-                {
-                    return NotFound();
-                }
-
-                UnitOfWork.Groups.Delete(id);
-
-                await SaveAsync(token);
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            return output;
         }
     }
 }

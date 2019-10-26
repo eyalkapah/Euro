@@ -1,4 +1,5 @@
-﻿using Euro.Domain.Interfaces.Repositories;
+﻿using Euro.Domain;
+using Euro.Domain.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace Euro.Data
 {
     public interface IUnitOfWork
     {
-        IGroupRepository Groups { get; set; }
+        IGroupRepository<Group> Groups { get; set; }
+        ITeamRepository<Team> Teams { get; set; }
 
         Task<bool> SaveAsync(CancellationToken token = default);
     }

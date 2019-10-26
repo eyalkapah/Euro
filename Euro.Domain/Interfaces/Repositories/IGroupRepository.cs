@@ -8,14 +8,16 @@ using System.Threading.Tasks;
 
 namespace Euro.Domain.Interfaces.Repositories
 {
-    public interface IGroupRepository : IRepository<Group>
+    public interface IGroupRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        Task<IEnumerable<Group>> GetAllGroupsAsync(CancellationToken token = default);
+        //Task AddAsync(TEntity input, CancellationToken token);
 
-        Task<Group> GetGroupByIdAsync(int id, CancellationToken token = default);
+        //Task DeleteAsync(CancellationToken token = default, params object[] keyValues);
 
-        Task AddGroupAsync(Group input, CancellationToken token);
+        //Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken token = default);
 
-        Task UpdateGroupAsync(int id, Group group, CancellationToken token = default);
+        //Task<TEntity> GetByIdAsync(CancellationToken token = default, params object[] keyValues);
+
+        //Task UpdateAsync(TEntity item, CancellationToken token = default, params object[] keyValues);
     }
 }

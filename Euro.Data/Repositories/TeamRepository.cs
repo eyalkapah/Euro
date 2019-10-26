@@ -11,24 +11,35 @@ using System.Threading.Tasks;
 
 namespace Euro.Data.Repositories
 {
-    public class TeamRepository : Repository<Team>, ITeamRepository
+    public class TeamRepository<TEntity> : BaseRepository<TEntity>, ITeamRepository<TEntity> where TEntity : Team
     {
         public TeamRepository(EuroContext context, IMemoryCache cache) : base(context, cache)
         {
         }
 
-        public async Task<IEnumerable<Group>> ITeamRepository.GetAllAsync(CancellationToken token)
+        Task ITeamRepository<TEntity>.AddAsync(TEntity input, CancellationToken token)
         {
-            var teams = await GetAllAsync(token);
+            throw new NotImplementedException();
+        }
 
-            foreach (var team in teams)
-            {
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(604800));
+        public Task DeleteAsync(CancellationToken token = default, params object[] keyValues)
+        {
+            throw new NotImplementedException();
+        }
 
-                Cache.Set(team.TeamId, team, cacheEntryOptions);
-            }
+        Task<IEnumerable<TEntity>> ITeamRepository<TEntity>.GetAllAsync(CancellationToken token)
+        {
+            throw new NotImplementedException();
+        }
 
-            return teams;
+        public Task<TEntity> GetByIdAsync(CancellationToken token = default, params object[] keyValues)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(TEntity item, CancellationToken token = default, params object[] keyValues)
+        {
+            throw new NotImplementedException();
         }
     }
 }

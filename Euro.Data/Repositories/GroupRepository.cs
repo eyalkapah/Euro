@@ -10,66 +10,83 @@ using System.Threading.Tasks;
 
 namespace Euro.Data.Repositories
 {
-    public class GroupRepository : Repository<Group>, IGroupRepository
+    public class GroupRepository<TEntity> : BaseRepository<TEntity>, IGroupRepository<TEntity> where TEntity : Group
     {
         public GroupRepository(EuroContext context, IMemoryCache cache) : base(context, cache)
         {
         }
 
-        public async Task<IEnumerable<Group>> GetAllGroupsAsync(CancellationToken token = default)
+        public new async Task AddAsync(TEntity item, CancellationToken token)
         {
-            var groups = await GetAllAsync(token);
+            if (await IsExistsAsync(g => g.Name.ToLower() == item.Name.ToLower()))
+            {
+                throw new DuplicateValueException(nameof(item.Name), item.Name);
+            }
 
-            foreach (var group in groups)
+            await base.AddAsync(item, token);
+        }
+
+        public async Task DeleteAsync(CancellationToken token = default, params object[] keyValues)
+        {
+            var item = await GetByIdAsync(token, keyValues);
+
+            if (item == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            Delete(item);
+        }
+
+        public new async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken token = default)
+        {
+            var items = await base.GetAllAsync(token);
+
+            foreach (var item in items)
             {
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(604800));
 
-                Cache.Set(group.GroupId, group, cacheEntryOptions);
+                Cache.Set(item.GroupId, item, cacheEntryOptions);
             }
 
-            return groups;
+            return items;
         }
 
-        public async Task<Group> GetGroupByIdAsync(int id, CancellationToken token = default)
+        public async Task<TEntity> GetByIdAsync(CancellationToken token = default, params object[] keyValues)
         {
-            var group = Cache.Get<Group>(id);
+            var item = Cache.Get<TEntity>(keyValues);
 
-            if (group != null)
+            if (item != null)
             {
-                return group;
+                return item;
             }
             else
             {
-                group = await FindAsync(token, id);
+                item = await FindAsync(token, keyValues);
+
+                if (item == null)
+                    throw new NotFoundException();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(604800));
 
-                Cache.Set(id, group, cacheEntryOptions);
+                Cache.Set(keyValues, item, cacheEntryOptions);
 
-                return group;
+                return item;
             }
         }
 
-        public async Task AddGroupAsync(Group group, CancellationToken token)
+        public async Task UpdateAsync(TEntity item, CancellationToken token = default, params object[] keyValues)
         {
-            if (await IsExistsAsync(g => g.Name.ToLower() == group.Name.ToLower()))
+            var id = (int)keyValues[0];
+
+            if (await IsExistsAsync(g => g.Name.ToLower() == item.Name.ToLower() && g.GroupId != id, token))
             {
-                throw new DuplicateValueException(nameof(group.Name), group.Name);
+                throw new AlreadyExistsException(item.Name);
             }
 
-            await AddAsync(group, token);
-        }
+            item.GroupId = id;
 
-        public async Task UpdateGroupAsync(int id, Group group, CancellationToken token = default)
-        {
-            if (await IsExistsAsync(g => g.Name.ToLower() == group.Name.ToLower() && g.GroupId != id, token))
-            {
-                throw new AlreadyExistsException(group.Name);
-            }
-
-            group.GroupId = id;
-
-            Update(group);
+            Update(item);
         }
     }
 }

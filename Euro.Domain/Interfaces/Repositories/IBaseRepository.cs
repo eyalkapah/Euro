@@ -1,14 +1,23 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Euro.Domain.Interfaces.Repositories
 {
-    public interface ITeamRepository<TEntity>
+    public interface IBaseRepository<TEntity> : IDisposable where TEntity : class
     {
+        //void AddRange(IEnumerable<TEntity> entities);
+
+        //bool Any(Expression<Func<TEntity, bool>> predicate);
+
+        //bool IsEmpty();
+
+        //IQueryable<TEntity> Queryable();
         Task AddAsync(TEntity input, CancellationToken token);
 
         Task DeleteAsync(CancellationToken token = default, params object[] keyValues);
