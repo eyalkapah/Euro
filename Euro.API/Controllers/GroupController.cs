@@ -20,8 +20,6 @@ namespace Euro.API.Controllers
     [ApiController]
     public class GroupController : BaseController<Group, GroupApiModel>
     {
-        //public IGroupRepository<Group> Repository { get; }
-
         public GroupController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
             Repository = unitOfWork.Groups;
@@ -64,8 +62,6 @@ namespace Euro.API.Controllers
         public new async Task<ActionResult<GroupApiModel>> Put(int id, [FromBody] GroupApiModel input, CancellationToken token = default)
         {
             var output = await base.Put(id, input, token);
-
-            //(Group entity, GroupApiModel apiModel) = output.ReplyData;
 
             if (output is OkObjectResult okResult)
             {

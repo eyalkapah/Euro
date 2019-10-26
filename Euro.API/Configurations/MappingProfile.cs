@@ -14,6 +14,7 @@ namespace Euro.API.Configurations
         public MappingProfile()
         {
             CreateMap<Group, GroupApiModel>().ReverseMap();
+            CreateMap<Team, TeamApiModel>().ReverseMap();
         }
     }
 }

@@ -20,140 +20,55 @@ namespace Euro.API.Controllers
     [ApiController]
     public class TeamController : BaseController<Team, TeamApiModel>
     {
-        public ITeamRepository<Team> Repository { get; }
-
         public TeamController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
             Repository = unitOfWork.Teams;
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id, CancellationToken token = default)
+        public new Task<ActionResult> Delete(int id, CancellationToken token = default)
         {
-            try
-            {
-                await Repository.DeleteAsync(token, id);
-
-                await SaveAsync(token);
-
-                return NoContent();
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            return base.Delete(id, token);
         }
 
-        //[HttpGet]
-        //[Produces(typeof(List<TeamApiModel>))]
-        //public override async Task<ActionResult<IEnumerable<TeamApiModel>>> Get(CancellationToken token = default)
-        //{
-        //    try
-        //    {
-        //        var teams = await Repository.GetAllAsync(token);
-
-        //        var apiModel = Mapper.Map<IEnumerable<TeamApiModel>>(teams);
-
-        //        return Ok(apiModel);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, ex);
-        //    }
-        //}
-
-        [HttpGet("{id}", Name = "GetById")]
-        [Produces(typeof(TeamApiModel))]
-        public async Task<ActionResult<TeamApiModel>> Get(int id, CancellationToken token = default)
+        [HttpGet]
+        [Produces(typeof(List<TeamApiModel>))]
+        public new Task<ActionResult<IEnumerable<TeamApiModel>>> Get(CancellationToken token = default)
         {
-            try
-            {
-                var team = await Repository.GetByIdAsync(token, id);
+            return base.Get(token);
+        }
 
-                var apiModel = Mapper.Map<TeamApiModel>(team);
-
-                return Ok(apiModel);
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex);
-            }
+        [HttpGet("{id}", Name = "GetTeam")]
+        [Produces(typeof(TeamApiModel))]
+        public new Task<ActionResult<TeamApiModel>> Get(int id, CancellationToken token = default)
+        {
+            return base.Get(id, token);
         }
 
         [HttpPost]
-        public async Task<ActionResult<TeamApiModel>> Post([FromBody] TeamApiModel input, CancellationToken token = default)
+        public new async Task<ActionResult<TeamApiModel>> Post([FromBody] TeamApiModel input, CancellationToken token = default)
         {
-            try
+            var output = await base.Post(input, token);
+
+            if (output is OkObjectResult okResult)
             {
-                if (input == null)
-                {
-                    return BadRequest();
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return new UnprocessableEntityObjectResult(ModelState);
-                }
-
-                var team = Mapper.Map<Team>(input);
-
-                await Repository.AddAsync(team, token);
-
-                await SaveAsync(token);
-
-                var output = Mapper.Map<TeamApiModel>(team);
-
-                return CreatedAtRoute("GetById", new { id = team.TeamId }, output);
+                return CreatedAtRoute("GetTeam", new { id = ((TeamApiModel)okResult.Value).TeamId }, okResult.Value);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+
+            return output;
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<TeamApiModel>> Put(int id, [FromBody] TeamApiModel input, CancellationToken token = default)
+        public new async Task<ActionResult<TeamApiModel>> Put(int id, [FromBody] TeamApiModel input, CancellationToken token = default)
         {
-            try
+            var output = await base.Put(id, input, token);
+
+            if (output is OkObjectResult okResult)
             {
-                if (input == null)
-                {
-                    return BadRequest();
-                }
-
-                var team = await Repository.GetByIdAsync(token, id);
-
-                if (!ModelState.IsValid)
-                {
-                    return new UnprocessableEntityObjectResult(ModelState);
-                }
-
-                team = Mapper.Map(input, team);
-
-                await Repository.UpdateAsync(team, token, id);
-
-                await SaveAsync(token);
-
-                var output = Mapper.Map<TeamApiModel>(team);
-
-                return CreatedAtRoute("GetById", new { id = team.TeamId }, output);
+                return CreatedAtRoute("GetTeam", new { id }, okResult.Value);
             }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+
+            return output;
         }
     }
 }
