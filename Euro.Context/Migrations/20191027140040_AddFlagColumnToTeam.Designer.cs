@@ -4,14 +4,16 @@ using Euro.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Euro.Context.Migrations
 {
     [DbContext(typeof(EuroContext))]
-    partial class EuroContextModelSnapshot : ModelSnapshot
+    [Migration("20191027140040_AddFlagColumnToTeam")]
+    partial class AddFlagColumnToTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

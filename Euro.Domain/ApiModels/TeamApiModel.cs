@@ -15,5 +15,8 @@ namespace Euro.Domain.ApiModels
         public string Name { get; set; }
 
         public int TeamId { get; set; }
+
+        [MaxLength(32)]
+        public string FlagImage { get; set; }
     }
 }
