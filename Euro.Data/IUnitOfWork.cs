@@ -13,6 +13,7 @@ namespace Euro.Data
     {
         IGroupRepository<Group> Groups { get; set; }
         ITeamRepository<Team> Teams { get; set; }
+        IMatchRepository<Match> Matches { get; set; }
 
         Task<bool> SaveAsync(CancellationToken token = default);
     }

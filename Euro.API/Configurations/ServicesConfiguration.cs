@@ -23,6 +23,7 @@ namespace Euro.API.Configurations
         {
             services.AddScoped<IGroupRepository<Group>, GroupRepository<Group>>();
             services.AddScoped<ITeamRepository<Team>, TeamRepository<Team>>();
+            services.AddScoped<IMatchRepository<Match>, MatchRepository<Match>>();
         }
 
         public static void ConfigureUnitOfWork(this IServiceCollection services)

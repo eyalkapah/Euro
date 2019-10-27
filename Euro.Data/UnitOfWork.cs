@@ -17,13 +17,15 @@ namespace Euro.Data
 
         public IGroupRepository<Group> Groups { get; set; }
         public ITeamRepository<Team> Teams { get; set; }
+        public IMatchRepository<Match> Matches { get; set; }
 
-        public UnitOfWork(EuroContext context, IGroupRepository<Group> groupRepository, ITeamRepository<Team> teamRepository)
+        public UnitOfWork(EuroContext context, IGroupRepository<Group> groupRepository, ITeamRepository<Team> teamRepository, IMatchRepository<Match> matchRepository)
         {
             _context = context;
 
             Groups = groupRepository;
             Teams = teamRepository;
+            Matches = matchRepository;
         }
 
         public async Task<bool> SaveAsync(CancellationToken token = default) => await _context.SaveChangesAsync(token) > 0;
