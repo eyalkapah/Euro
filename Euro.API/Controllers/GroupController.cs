@@ -45,6 +45,29 @@ namespace Euro.API.Controllers
             return base.Get(id, token);
         }
 
+        [HttpGet("team/{id}")]
+        [Produces(typeof(GroupApiModel))]
+        public async Task<ActionResult<GroupApiModel>> GetByTeamId(int id, CancellationToken token = default)
+        {
+            try
+            {
+                var team = await UnitOfWork.Teams.GetByIdAsync(token, id);
+
+                if (team == null)
+                    return NotFound();
+
+                var group = await Repository.GetByIdAsync(token, team.GroupId);
+
+                var apiModel = Mapper.Map<GroupApiModel>(group);
+
+                return Ok(apiModel);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
         [HttpPost]
         public new async Task<ActionResult<GroupApiModel>> Post([FromBody] GroupApiModel input, CancellationToken token = default)
         {

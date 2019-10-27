@@ -48,7 +48,7 @@ namespace Euro.Data.Repositories
             {
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(604800));
 
-                Cache.Set(item.GroupId, item, cacheEntryOptions);
+                Cache.Set(item.TeamId, item, cacheEntryOptions);
             }
 
             return items;
@@ -75,6 +75,15 @@ namespace Euro.Data.Repositories
 
                 return item;
             }
+        }
+
+        public async Task<IEnumerable<Team>> GetTeamsByGroupIdAsync(CancellationToken token, params object[] keyValues)
+        {
+            int.TryParse(keyValues[0].ToString(), out int groupId);
+
+            var teams = await GetAllAsync(token);
+
+            return teams.Where(t => t.GroupId == groupId);
         }
 
         public async Task UpdateAsync(TEntity item, CancellationToken token = default, params object[] keyValues)
