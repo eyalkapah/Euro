@@ -30,6 +30,10 @@ namespace Euro.Context.Configurations
                 .WithMany()
                 .HasForeignKey(p => p.GuestTeamId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(p => p.Group)
+                .WithMany(g => g.Matches)
+                .HasForeignKey(p => p.GroupId);
         }
     }
 }

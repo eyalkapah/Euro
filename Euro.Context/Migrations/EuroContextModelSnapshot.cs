@@ -95,6 +95,9 @@ namespace Euro.Context.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GuestScored")
                         .HasColumnType("int");
 
@@ -110,16 +113,13 @@ namespace Euro.Context.Migrations
                     b.Property<DateTime>("PlayDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("int");
-
                     b.HasKey("MatchId");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("GuestTeamId");
 
                     b.HasIndex("HostTeamId");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("Matches");
 
@@ -127,6 +127,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 1,
+                            GroupId = 9,
                             GuestScored = 0,
                             GuestTeamId = 7,
                             HostScored = 3,
@@ -136,6 +137,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 2,
+                            GroupId = 9,
                             GuestScored = 0,
                             GuestTeamId = 9,
                             HostScored = 5,
@@ -145,6 +147,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 3,
+                            GroupId = 3,
                             GuestScored = 0,
                             GuestTeamId = 11,
                             HostScored = 2,
@@ -154,6 +157,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 4,
+                            GroupId = 3,
                             GuestScored = 0,
                             GuestTeamId = 13,
                             HostScored = 4,
@@ -163,6 +167,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 5,
+                            GroupId = 5,
                             GuestScored = 0,
                             GuestTeamId = 15,
                             HostScored = 2,
@@ -172,6 +177,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 6,
+                            GroupId = 5,
                             GuestScored = 1,
                             GuestTeamId = 17,
                             HostScored = 2,
@@ -181,6 +187,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 7,
+                            GroupId = 7,
                             GuestScored = 1,
                             GuestTeamId = 19,
                             HostScored = 1,
@@ -190,6 +197,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 8,
+                            GroupId = 7,
                             GuestScored = 1,
                             GuestTeamId = 21,
                             HostScored = 3,
@@ -199,6 +207,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 9,
+                            GroupId = 3,
                             GuestScored = 1,
                             GuestTeamId = 23,
                             HostScored = 0,
@@ -208,6 +217,7 @@ namespace Euro.Context.Migrations
                         new
                         {
                             MatchId = 10,
+                            GroupId = 9,
                             GuestScored = 1,
                             GuestTeamId = 25,
                             HostScored = 3,
@@ -551,6 +561,12 @@ namespace Euro.Context.Migrations
 
             modelBuilder.Entity("Euro.Domain.Match", b =>
                 {
+                    b.HasOne("Euro.Domain.Group", "Group")
+                        .WithMany("Matches")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Euro.Domain.Team", "GuestTeam")
                         .WithMany()
                         .HasForeignKey("GuestTeamId")
@@ -562,10 +578,6 @@ namespace Euro.Context.Migrations
                         .HasForeignKey("HostTeamId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("Euro.Domain.Team", null)
-                        .WithMany("Matches")
-                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("Euro.Domain.Team", b =>

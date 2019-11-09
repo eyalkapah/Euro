@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Euro.Context.Migrations
 {
     [DbContext(typeof(EuroContext))]
-    [Migration("20191022121232_SeedAllTeams")]
-    partial class SeedAllTeams
+    [Migration("20191109210717_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,6 +97,9 @@ namespace Euro.Context.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GuestScored")
                         .HasColumnType("int");
 
@@ -112,18 +115,117 @@ namespace Euro.Context.Migrations
                     b.Property<DateTime>("PlayDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("int");
-
                     b.HasKey("MatchId");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("GuestTeamId");
 
                     b.HasIndex("HostTeamId");
 
-                    b.HasIndex("TeamId");
-
                     b.ToTable("Matches");
+
+                    b.HasData(
+                        new
+                        {
+                            MatchId = 1,
+                            GroupId = 9,
+                            GuestScored = 0,
+                            GuestTeamId = 7,
+                            HostScored = 3,
+                            HostTeamId = 6,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 2,
+                            GroupId = 9,
+                            GuestScored = 0,
+                            GuestTeamId = 9,
+                            HostScored = 5,
+                            HostTeamId = 8,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 3,
+                            GroupId = 3,
+                            GuestScored = 0,
+                            GuestTeamId = 11,
+                            HostScored = 2,
+                            HostTeamId = 10,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 4,
+                            GroupId = 3,
+                            GuestScored = 0,
+                            GuestTeamId = 13,
+                            HostScored = 4,
+                            HostTeamId = 12,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 5,
+                            GroupId = 5,
+                            GuestScored = 0,
+                            GuestTeamId = 15,
+                            HostScored = 2,
+                            HostTeamId = 14,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 6,
+                            GroupId = 5,
+                            GuestScored = 1,
+                            GuestTeamId = 17,
+                            HostScored = 2,
+                            HostTeamId = 16,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 7,
+                            GroupId = 7,
+                            GuestScored = 1,
+                            GuestTeamId = 19,
+                            HostScored = 1,
+                            HostTeamId = 18,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 8,
+                            GroupId = 7,
+                            GuestScored = 1,
+                            GuestTeamId = 21,
+                            HostScored = 3,
+                            HostTeamId = 20,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 9,
+                            GroupId = 3,
+                            GuestScored = 1,
+                            GuestTeamId = 23,
+                            HostScored = 0,
+                            HostTeamId = 22,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            MatchId = 10,
+                            GroupId = 9,
+                            GuestScored = 1,
+                            GuestTeamId = 25,
+                            HostScored = 3,
+                            HostTeamId = 24,
+                            PlayDateTime = new DateTime(2019, 3, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Euro.Domain.Team", b =>
@@ -132,6 +234,9 @@ namespace Euro.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FlagImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
@@ -458,6 +563,12 @@ namespace Euro.Context.Migrations
 
             modelBuilder.Entity("Euro.Domain.Match", b =>
                 {
+                    b.HasOne("Euro.Domain.Group", "Group")
+                        .WithMany("Matches")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Euro.Domain.Team", "GuestTeam")
                         .WithMany()
                         .HasForeignKey("GuestTeamId")
@@ -469,10 +580,6 @@ namespace Euro.Context.Migrations
                         .HasForeignKey("HostTeamId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("Euro.Domain.Team", null)
-                        .WithMany("Matches")
-                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("Euro.Domain.Team", b =>

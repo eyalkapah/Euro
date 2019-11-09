@@ -6,17 +6,19 @@ namespace Euro.Domain
 {
     public class Team
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int TeamId { get; set; }
-
-        public string Name { get; set; }
+        public string FlagImage { get; set; }
 
         [NotMapped]
         public Group Group { get; set; }
 
         public int GroupId { get; set; }
+
+        [NotMapped]
         public ICollection<Match> Matches { get; set; } = new HashSet<Match>();
 
-        public string FlagImage { get; set; }
+        public string Name { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int TeamId { get; set; }
     }
 }

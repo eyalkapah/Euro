@@ -19,7 +19,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 7,
                 HostScored = 3,
                 GuestScored = 0,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 9
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -28,7 +29,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 9,
                 HostScored = 5,
                 GuestScored = 0,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 9
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -37,7 +39,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 11,
                 HostScored = 2,
                 GuestScored = 0,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 3
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -46,7 +49,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 13,
                 HostScored = 4,
                 GuestScored = 0,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 3
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -55,7 +59,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 15,
                 HostScored = 2,
                 GuestScored = 0,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 5
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -64,7 +69,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 17,
                 HostScored = 2,
                 GuestScored = 1,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 5
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -73,7 +79,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 19,
                 HostScored = 1,
                 GuestScored = 1,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 7
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -82,7 +89,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 21,
                 HostScored = 3,
                 GuestScored = 1,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 7
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -91,7 +99,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 23,
                 HostScored = 0,
                 GuestScored = 1,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 3
             });
             builder.Entity<Match>().HasData(new Match
             {
@@ -100,7 +109,8 @@ namespace Euro.Context.Migrations.Seeders
                 GuestTeamId = 25,
                 HostScored = 3,
                 GuestScored = 1,
-                PlayDateTime = new DateTime(2019, 3, 21)
+                PlayDateTime = new DateTime(2019, 3, 21),
+                GroupId = 9
             });
         }
     }

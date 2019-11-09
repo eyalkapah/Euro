@@ -14,6 +14,9 @@ namespace Euro.Domain
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GroupId { get; set; }
 
+        [NotMapped]
+        public ICollection<Match> Matches { get; set; } = new HashSet<Match>();
+
         public string Name { get; set; }
 
         [NotMapped]
