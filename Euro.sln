@@ -5,11 +5,16 @@ VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Euro.API", "Euro.API\Euro.API.csproj", "{F73586FE-E8E6-4D81-BF9F-775669EF65D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Euro.ContextDb", "Euro.ContextDb\Euro.ContextDb.csproj", "{7F336F0D-538E-4DE9-BBC0-005252309EE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Euro.ContextDb", "Euro.ContextDb\Euro.ContextDb.csproj", "{7F336F0D-538E-4DE9-BBC0-005252309EE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Euro.Domain", "Euro.Domain\Euro.Domain.csproj", "{6EB3E39C-2928-45B9-9CC2-01CEEED23A37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Euro.Domain", "Euro.Domain\Euro.Domain.csproj", "{6EB3E39C-2928-45B9-9CC2-01CEEED23A37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Euro.Data", "Euro.Data\Euro.Data.csproj", "{D59CB254-B167-4651-8A1E-C183CA36D97D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Euro.Data", "Euro.Data\Euro.Data.csproj", "{D59CB254-B167-4651-8A1E-C183CA36D97D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{C18C35E2-78A3-4BCB-9BCD-33AB7D08C5D2}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.txt = Readme.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
