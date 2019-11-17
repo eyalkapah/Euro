@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Euro.Data;
-using Euro.Data.Exceptiona;
+using Euro.Data.Exceptions;
 using Euro.Domain.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;

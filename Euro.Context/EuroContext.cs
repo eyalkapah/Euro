@@ -1,18 +1,19 @@
 ﻿using Euro.Context.Configurations;
 using Euro.Context.Migrations.Seeders;
+using Euro.Context.Models;
 using Euro.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Euro.Context
 {
-    public class EuroContext : DbContext
+    public class EuroContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Team> Teams { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<Team> Teams { get; set; }
 
-        public EuroContext(DbContextOptions options) : base(options)
+        public EuroContext(DbContextOptions<EuroContext> options) : base(options)
         {
         }
 

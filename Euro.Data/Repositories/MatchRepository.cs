@@ -1,12 +1,11 @@
-﻿using Euro.Context;
-using Euro.Data.Exceptiona;
+﻿using Euro.ContextDb;
+using Euro.Data.Exceptions;
 using Euro.Domain;
 using Euro.Domain.Interfaces.Repositories;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,15 +15,6 @@ namespace Euro.Data.Repositories
     {
         public MatchRepository(EuroContext context, IMemoryCache cache) : base(context, cache)
         {
-        }
-
-        public async Task<IEnumerable<Match>> GetByTeamIdAsync(CancellationToken token, params object[] keyValues)
-        {
-            int.TryParse(keyValues[0].ToString(), out int teamId);
-
-            var matches = await GetAllAsync(token);
-
-            return matches.Where(t => t.HostTeamId == teamId || t.GuestTeamId == teamId);
         }
 
         public new async Task AddAsync(TEntity item, CancellationToken token) => await base.AddAsync(item, token);
@@ -76,6 +66,15 @@ namespace Euro.Data.Repositories
 
                 return item;
             }
+        }
+
+        public async Task<IEnumerable<Match>> GetByTeamIdAsync(CancellationToken token, params object[] keyValues)
+        {
+            int.TryParse(keyValues[0].ToString(), out int teamId);
+
+            var matches = await GetAllAsync(token);
+
+            return matches.Where(t => t.HostTeamId == teamId || t.GuestTeamId == teamId);
         }
 
         public Task UpdateAsync(TEntity item, CancellationToken token = default, params object[] keyValues)

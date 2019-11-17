@@ -1,12 +1,4 @@
-﻿using Euro.Domain.ApiModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Euro.Domain.Interfaces.Repositories
+﻿namespace Euro.Domain.Interfaces.Repositories
 {
     public interface IGroupRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {

@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using Euro.Data;
-using Euro.Data.Exceptiona;
 using Euro.Domain;
 using Euro.Domain.ApiModels;
-using Euro.Domain.Interfaces.Repositories;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
