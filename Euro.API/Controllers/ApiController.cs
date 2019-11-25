@@ -1,4 +1,5 @@
-﻿using Euro.ContextDb.Models;
+﻿using Euro.API.Base;
+using Euro.ContextDb.Models;
 using Euro.Domain.ApiModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,8 +22,29 @@ namespace Euro.API.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Register([FromBody] RegisterCredentialsApiModel userCredentials)
+        public async Task<ApiResponse> Register([FromBody] RegisterCredentialsApiModel userCredentials)
         {
+            var invalidErrorMessage = "Please provide all required details to register for an account.";
+
+            var errorResponse = new ApiResponse
+            {
+                ErrorMessage = invalidErrorMessage
+            };
+
+            if (userCredentials == null)
+            {
+                return errorResponse;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return new ApiResponse
+                {
+                    ErrorMessage = ModelState.ToString()
+                };
+                //return new UnprocessableEntityObjectResult(ModelState);
+            }
+
             var user = new ApplicationUser
             {
                 Email = userCredentials?.Email,
@@ -30,7 +52,20 @@ namespace Euro.API.Controllers
                 LastName = userCredentials?.LastName,
             };
 
-            // TODO: Get the UserManager<ApplicationUser>
+            var result = await _userManager.CreateAsync(user, userCredentials.Password);
+
+            if (result.Succeeded)
+            {
+                // Generate an email verification code
+                var emailVerificationCode = _userManager.GenerateEmailConfirmationTokenAsync(user);
+            }
+            else
+            {
+                return new ApiResponse
+                {
+                    ErrorMessage = result.Errors?.ToList().Select(f => f.Description).Aggregate((a, b) => $"{a}{Environment.NewLine}{b}")
+                };
+            }
             return null;
         }
     }

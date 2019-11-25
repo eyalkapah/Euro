@@ -2,6 +2,7 @@
 using Euro.Data.Repositories;
 using Euro.Domain;
 using Euro.Domain.Interfaces.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Euro.API.Configurations
@@ -12,6 +13,20 @@ namespace Euro.API.Configurations
         {
             services.AddMemoryCache();
             services.AddResponseCaching();
+        }
+
+        public static void ConfigureIdentityOptions(this IServiceCollection services)
+        {
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.User.RequireUniqueEmail = true;
+            });
         }
 
         public static void ConfigureRepositories(this IServiceCollection services)
