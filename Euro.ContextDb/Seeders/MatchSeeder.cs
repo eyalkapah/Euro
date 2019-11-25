@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Euro.ContextDb.Migrations.Seeders
+namespace Euro.ContextDb.Seeders
 {
     public static class MatchSeeder
     {

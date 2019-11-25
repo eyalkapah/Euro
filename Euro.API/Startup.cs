@@ -32,6 +32,8 @@ namespace Euro.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Adds cookie based authentication
+            //services.AddIdentity<ApplicationUser, IdentityRole>();
             services.AddAuthentication(x =>
             {
                 //x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -52,8 +54,6 @@ namespace Euro.API
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Jwt:Key"])),
                     };
                 });
-
-            services.AddIdentity<ApplicationUser, IdentityRole>();
 
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));

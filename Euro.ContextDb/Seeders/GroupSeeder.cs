@@ -1,7 +1,7 @@
 ﻿using Euro.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Euro.ContextDb.Migrations.Seeders
+namespace Euro.ContextDb.Seeders
 {
     public static class GroupSeeder
     {

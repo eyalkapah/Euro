@@ -1,7 +1,7 @@
 ﻿using Euro.Context.Configurations;
 using Euro.ContextDb.Configurations;
-using Euro.ContextDb.Migrations.Seeders;
 using Euro.ContextDb.Models;
+using Euro.ContextDb.Seeders;
 using Euro.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
