@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Euro.Domain.ApiModels
 {
     public class RegisterCredentialsApiModel
     {
+        [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [Required]
+        [JsonPropertyName("first_name")]
         public string FirstName { get; set; }
 
-        [Required]
+        [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
+        [JsonPropertyName("password")]
         public string Password { get; set; }
     }
 }

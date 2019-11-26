@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Euro.ContextDb.Migrations
 {
     [DbContext(typeof(EuroContext))]
-    [Migration("20191125074212_UpdateApplicationUser")]
-    partial class UpdateApplicationUser
+    [Migration("20191126201730_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
