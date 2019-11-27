@@ -14,7 +14,6 @@ namespace Euro.API.Controllers
     [Route("api/[controller]")]
     //[EnableCors("CorsPolicy")]
     [ApiController]
-    [Authorize]
     public class TeamController : BaseController<Team, TeamApiModel>
     {
         public TeamController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
