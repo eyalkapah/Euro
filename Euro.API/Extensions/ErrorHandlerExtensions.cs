@@ -21,12 +21,12 @@ namespace Euro.API.Extensions
             { "PasswordRequiresDigit", "Password" },
             { "PasswordRequiresLower", "Password" },
             { "PasswordRequiresUpper", "Password" },
-            { "InvalidUserName", "Password" },
-            { "DuplicateUserName", "Password" }
+            {"PasswordRequiresUniqueChars", "Password" },
+            { "InvalidUserName", "Email" },
+            { "DuplicateUserName", "Email" }
         };
-        
 
-        public static List<ErrorApiModel>  ParseErrors(this IEnumerable<IdentityError> errors)
+        public static List<ErrorApiModel> ParseErrors(this IEnumerable<IdentityError> errors)
         {
             var result = new List<ErrorApiModel>();
 
