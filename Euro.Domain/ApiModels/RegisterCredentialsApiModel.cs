@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Euro.Domain.ApiModels
 {
@@ -8,12 +6,6 @@ namespace Euro.Domain.ApiModels
     {
         [JsonPropertyName("email")]
         public string Email { get; set; }
-
-        [JsonPropertyName("first_name")]
-        public string FirstName { get; set; }
-
-        [JsonPropertyName("last_name")]
-        public string LastName { get; set; }
 
         [JsonPropertyName("password")]
         public string Password { get; set; }

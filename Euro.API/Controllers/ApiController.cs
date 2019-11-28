@@ -1,5 +1,6 @@
 ﻿using Euro.API.Authentication;
 using Euro.API.Base;
+using Euro.API.Extensions;
 using Euro.ContextDb.Models;
 using Euro.Domain.ApiModels;
 using Microsoft.AspNetCore.Identity;
@@ -16,8 +17,8 @@ namespace Euro.API.Controllers
 {
     public class ApiController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public ApiController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
@@ -27,34 +28,11 @@ namespace Euro.API.Controllers
 
         [Route("api/register")]
         [HttpPost]
-        public async Task<ApiResponse> Register([FromBody] RegisterCredentialsApiModel userCredentials)
+        public async Task<ActionResult<ApiResponse>> Register([FromBody] RegisterCredentialsApiModel userCredentials)
         {
-            var invalidErrorMessage = "Please provide all required details to register for an account.";
-
-            var errorResponse = new ApiResponse
-            {
-                ErrorMessage = invalidErrorMessage
-            };
-
-            if (userCredentials == null)
-            {
-                return errorResponse;
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return new ApiResponse
-                {
-                    ErrorMessage = ModelState.ToString()
-                };
-                //return new UnprocessableEntityObjectResult(ModelState);
-            }
-
             var user = new ApplicationUser
             {
                 Email = userCredentials?.Email,
-                FirstName = userCredentials?.FirstName,
-                LastName = userCredentials?.LastName,
                 UserName = userCredentials.Email
             };
 
@@ -80,8 +58,9 @@ namespace Euro.API.Controllers
                     Issuer = _configuration["Jwt:Issuer"]
                 };
 
-                return new ApiResponse
+                return Ok(new ApiResponse
                 {
+                    IsSucceeded = true,
                     Response = new RegisterCredentialsResultApiModel
                     {
                         FirstName = userIdentity.FirstName,
@@ -89,16 +68,16 @@ namespace Euro.API.Controllers
                         Email = userIdentity.Email,
                         Token = userIdentity.GenerateJwtToken(jwtParameters)
                     }
-                };
+                });
             }
             else
             {
-                return new ApiResponse
+                return BadRequest(new ApiResponse
                 {
-                    ErrorMessage = result.Errors?.ToList().Select(f => f.Description).Aggregate((a, b) => $"{a}{Environment.NewLine}{b}")
-                };
+                    IsSucceeded = false,
+                    Errors = result.Errors.ParseErrors()
+                });
             }
-            return null;
         }
     }
 }
