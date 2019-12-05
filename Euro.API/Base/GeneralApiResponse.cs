@@ -2,7 +2,7 @@
 
 namespace Euro.API.Base
 {
-    public class LoginApiResponse<T>
+    public class GeneralApiResponse<T>
     {
         [JsonPropertyName("error")]
         public string Error { get; set; }

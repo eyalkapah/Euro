@@ -29,12 +29,39 @@ namespace Euro.API.Controllers
             _configuration = configuration;
         }
 
+        [Route("api/profile")]
+        public async Task<ActionResult<GeneralApiResponse<UserProfileDetailsApiModel>>> GetUserProfile()
+        {
+            // Get user claims
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            // If we have no user...
+            if (user == null)
+                // Return error
+                return new GeneralApiResponse<UserProfileDetailsApiModel>()
+                {
+                    // TODO: Localization
+                    Error = "User not found"
+                };
+
+            // Return token to user
+            return new GeneralApiResponse<UserProfileDetailsApiModel>
+            {
+                // Pass back the user details and the token
+                Response = new UserProfileDetailsApiModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                }
+            };
+        }
+
         [Route("api/login")]
         public async Task<ActionResult<ApiResponse<LoginResultApiModel>>> LogIn([FromBody] LoginCredentialsApiModel loginCredentials)
         {
             var invalidErrorMessage = "Invalid username or password";
 
-            var errorReposnse = new LoginApiResponse<LoginResultApiModel>
+            var errorReposnse = new GeneralApiResponse<LoginResultApiModel>
             {
                 Error = invalidErrorMessage
             };
@@ -68,7 +95,7 @@ namespace Euro.API.Controllers
                 expires: DateTime.Now.AddMonths(3),
                 signingCredentials: credentials);
 
-            return Ok(new LoginApiResponse<LoginResultApiModel>
+            return Ok(new GeneralApiResponse<LoginResultApiModel>
             {
                 Response = new LoginResultApiModel
                 {
