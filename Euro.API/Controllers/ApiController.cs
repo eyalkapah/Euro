@@ -1,16 +1,15 @@
 ﻿using Euro.API.Authentication;
-using Euro.API.Base;
 using Euro.API.Extensions;
 using Euro.ContextDb.Models;
-using Euro.Domain.ApiModels;
+using Euro.Shared;
+using Euro.Shared.In;
+using Euro.Shared.Out;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +53,12 @@ namespace Euro.API.Controllers
                     LastName = user.LastName,
                 }
             };
+        }
+
+        [Route("api/test")]
+        public ActionResult Test([FromBody] Test test)
+        {
+            return Ok(test);
         }
 
         [Route("api/login")]

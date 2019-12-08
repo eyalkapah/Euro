@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Euro.API.Base
+namespace Euro.Shared.Out
 {
     public class GeneralApiResponse<T>
     {

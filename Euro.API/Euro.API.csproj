@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Base\**" />
+    <Content Remove="Base\**" />
+    <EmbeddedResource Remove="Base\**" />
+    <None Remove="Base\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
@@ -18,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Euro.ContextDb\Euro.ContextDb.csproj" />
     <ProjectReference Include="..\Euro.Data\Euro.Data.csproj" />
+    <ProjectReference Include="..\Euro.Shared\Euro.Shared.csproj" />
   </ItemGroup>
 
 </Project>

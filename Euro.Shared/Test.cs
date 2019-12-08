@@ -1,9 +1,8 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Euro.Domain.ApiModels
+namespace Euro.Shared
 {
-    public class RegisterCredentialsResultApiModel
+    public class Test
     {
         [JsonPropertyName("email")]
         public string Email { get; set; }
@@ -13,8 +12,5 @@ namespace Euro.Domain.ApiModels
 
         [JsonPropertyName("last_name")]
         public string LastName { get; set; }
-
-        [JsonPropertyName("token")]
-        public string Token { get; set; }
     }
 }

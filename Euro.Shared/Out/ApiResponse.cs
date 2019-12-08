@@ -1,8 +1,8 @@
-﻿using Euro.Domain.ApiModels;
+﻿using Euro.Shared.In;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Euro.API.Base
+namespace Euro.Shared.Out
 {
     public class ApiResponse<T>
     {
@@ -13,6 +13,6 @@ namespace Euro.API.Base
         public bool IsSucceeded => Errors == null;
 
         [JsonPropertyName("response")]
-        public T Response { get; internal set; }
+        public T Response { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Euro.Domain.ApiModels
+namespace Euro.Shared.In
 {
     public class RegisterCredentialsApiModel
     {
