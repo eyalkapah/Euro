@@ -54,6 +54,7 @@ namespace Euro.API.Controllers
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    Email = user.Email
                 }
             };
         }

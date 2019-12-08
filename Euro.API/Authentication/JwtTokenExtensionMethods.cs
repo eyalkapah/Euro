@@ -18,7 +18,7 @@ namespace Euro.API.Authentication
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
 
                 // Fills out the HttpContext.User.Identity.Name value
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
 
                 // Add user Id so that UserManager.GetUserAsync can find the user based on Id
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
