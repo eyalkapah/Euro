@@ -4,6 +4,8 @@ using Euro.ContextDb.Models;
 using Euro.Shared;
 using Euro.Shared.In;
 using Euro.Shared.Out;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +31,7 @@ namespace Euro.API.Controllers
         }
 
         [Route("api/profile")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<GeneralApiResponse<UserProfileDetailsApiModel>>> GetUserProfile()
         {
             // Get user claims
@@ -82,11 +85,10 @@ namespace Euro.API.Controllers
                 return BadRequest(errorReposnse);
 
             var claims = new[]
-
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
                 new Claim(ClaimsIdentity.DefaultNameClaimType, loginCredentials.Username),
-                new Claim(JwtRegisteredClaimNames.Email, loginCredentials.Username)
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
             // Create the credentials

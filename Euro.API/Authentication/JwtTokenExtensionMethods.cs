@@ -20,6 +20,7 @@ namespace Euro.API.Authentication
                 // Fills out the HttpContext.User.Identity.Name value
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
 
+                // Add user Id so that UserManager.GetUserAsync can find the user based on Id
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
