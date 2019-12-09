@@ -59,6 +59,22 @@ namespace Euro.API.Controllers
             };
         }
 
+        [Route("api/auth")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> Auth()
+        {
+            // Get user claims
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            // If we have no user return Unauthorized
+            if (user == null)
+                // Return error
+                return Unauthorized();
+
+            // Return ok
+            return Ok();
+        }
+
         [Route("api/test")]
         public ActionResult Test([FromBody] Test test)
         {
@@ -108,8 +124,6 @@ namespace Euro.API.Controllers
                 Response = new LoginResultApiModel
                 {
                     Username = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
                     Token = new JwtSecurityTokenHandler().WriteToken(token)
                 }
             });
