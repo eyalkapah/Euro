@@ -30,9 +30,9 @@ namespace Euro.API.Controllers
             _configuration = configuration;
         }
 
-        [Route("api/profile")]
+        [Route(Routes.GetUserProfile)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<GeneralApiResponse<UserProfileDetailsApiModel>>> GetUserProfile()
+        public async Task<ActionResult<GeneralApiResponse<UserProfileDetailsResultApiModel>>> GetUserProfile()
         {
             // Get user claims
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -40,17 +40,17 @@ namespace Euro.API.Controllers
             // If we have no user...
             if (user == null)
                 // Return error
-                return new GeneralApiResponse<UserProfileDetailsApiModel>()
+                return new GeneralApiResponse<UserProfileDetailsResultApiModel>()
                 {
                     // TODO: Localization
                     Error = "User not found"
                 };
 
             // Return token to user
-            return new GeneralApiResponse<UserProfileDetailsApiModel>
+            return new GeneralApiResponse<UserProfileDetailsResultApiModel>
             {
                 // Pass back the user details and the token
-                Response = new UserProfileDetailsApiModel
+                Response = new UserProfileDetailsResultApiModel
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
@@ -59,7 +59,7 @@ namespace Euro.API.Controllers
             };
         }
 
-        [Route("api/auth")]
+        [Route(Routes.Auth)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Auth()
         {
@@ -75,13 +75,38 @@ namespace Euro.API.Controllers
             return Ok();
         }
 
-        [Route("api/test")]
+        [Route(Routes.Test)]
         public ActionResult Test([FromBody] Test test)
         {
             return Ok(test);
         }
 
-        [Route("api/login")]
+        [Route(Routes.UpdateUserProfile)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> UpdateProfileAsync([FromBody] UserProfileDetailsApiModel userProfile)
+        {
+            // Get user claims
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            // If we have no user return Unauthorized
+            if (user == null)
+                // Return error
+                return Unauthorized();
+
+            user.FirstName = userProfile.FirstName;
+            user.LastName = userProfile.LastName;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
+
+        [Route(Routes.LogIn)]
         public async Task<ActionResult<ApiResponse<LoginResultApiModel>>> LogIn([FromBody] LoginCredentialsApiModel loginCredentials)
         {
             var invalidErrorMessage = "Invalid username or password";
@@ -129,7 +154,7 @@ namespace Euro.API.Controllers
             });
         }
 
-        [Route("api/register")]
+        [Route(Routes.Register)]
         [HttpPost]
         public async Task<ActionResult<ApiResponse<RegisterCredentialsResultApiModel>>> Register([FromBody] RegisterCredentialsApiModel userCredentials)
         {

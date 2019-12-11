@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.IO.MemoryMappedFiles;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Euro.Shared
 {
