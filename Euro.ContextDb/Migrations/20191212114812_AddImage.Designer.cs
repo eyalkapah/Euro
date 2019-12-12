@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Euro.ContextDb.Migrations
 {
     [DbContext(typeof(EuroContext))]
-    [Migration("20191126201730_Init")]
-    partial class Init
+    [Migration("20191212114812_AddImage")]
+    partial class AddImage
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,6 +41,9 @@ namespace Euro.ContextDb.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")

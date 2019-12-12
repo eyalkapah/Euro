@@ -1,4 +1,5 @@
-﻿using Euro.API.Authentication;
+﻿using AutoMapper;
+using Euro.API.Authentication;
 using Euro.API.Extensions;
 using Euro.ContextDb.Models;
 using Euro.Shared;
@@ -6,12 +7,15 @@ using Euro.Shared.In;
 using Euro.Shared.Out;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,11 +27,58 @@ namespace Euro.API.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
-        public ApiController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public ApiController(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMapper mapper, IWebHostEnvironment environment)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _environment = environment;
+        }
+
+        [HttpPost]
+        [Route(Routes.UploadImage)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> UploadImage(IFormFile file)
+        {
+            var user = await GetCurrentUserAsync();
+
+            // If we have no user...
+            if (user == null)
+                // Return error
+                return Unauthorized("User not found");
+
+            if (file.Length > 0)
+            {
+                try
+                {
+                    var uploadFolder = $"{_environment.WebRootPath}\\uploads\\{user.Id}";
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+
+                    using (var fileStream = System.IO.File.Create($"{uploadFolder}\\profile{Path.GetExtension(file.FileName)}"))
+                    {
+                        await file.CopyToAsync(fileStream);
+
+                        fileStream.Flush();
+
+                        return Ok($"File successfully uploaded");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, ex.Message);
+                }
+            }
+
+            return StatusCode(500, "Failure");
+        }
+
+        private Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
 
         [Route(Routes.GetUserProfile)]

@@ -19,5 +19,7 @@ namespace Euro.Shared
         public const string LogIn = "api/login";
 
         public const string Register = "api/register";
+
+        public const string UploadImage = "api/user/image";
     }
 }
