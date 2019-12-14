@@ -25,9 +25,9 @@ namespace Euro.API.Controllers
 {
     public class ApiController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _environment;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public ApiController(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMapper mapper, IWebHostEnvironment environment)
         {
@@ -36,49 +36,20 @@ namespace Euro.API.Controllers
             _environment = environment;
         }
 
-        [HttpPost]
-        [Route(Routes.UploadImage)]
+        [Route(Routes.Auth)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> UploadImage(IFormFile file)
+        public async Task<ActionResult> Auth()
         {
-            var user = await GetCurrentUserAsync();
+            // Get user claims
+            var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            // If we have no user...
+            // If we have no user return Unauthorized
             if (user == null)
                 // Return error
-                return Unauthorized("User not found");
+                return Unauthorized();
 
-            if (file.Length > 0)
-            {
-                try
-                {
-                    var uploadFolder = $"{_environment.WebRootPath}\\uploads\\{user.Id}";
-                    if (!Directory.Exists(uploadFolder))
-                    {
-                        Directory.CreateDirectory(uploadFolder);
-                    }
-
-                    using (var fileStream = System.IO.File.Create($"{uploadFolder}\\profile{Path.GetExtension(file.FileName)}"))
-                    {
-                        await file.CopyToAsync(fileStream);
-
-                        fileStream.Flush();
-
-                        return Ok($"File successfully uploaded");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, ex.Message);
-                }
-            }
-
-            return StatusCode(500, "Failure");
-        }
-
-        private Task<ApplicationUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
+            // Return ok
+            return Ok();
         }
 
         [Route(Routes.GetUserProfile)]
@@ -108,53 +79,6 @@ namespace Euro.API.Controllers
                     Email = user.Email
                 }
             };
-        }
-
-        [Route(Routes.Auth)]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> Auth()
-        {
-            // Get user claims
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-
-            // If we have no user return Unauthorized
-            if (user == null)
-                // Return error
-                return Unauthorized();
-
-            // Return ok
-            return Ok();
-        }
-
-        [Route(Routes.Test)]
-        public ActionResult Test([FromBody] Test test)
-        {
-            return Ok(test);
-        }
-
-        [Route(Routes.UpdateUserProfile)]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> UpdateProfileAsync([FromBody] UserProfileDetailsApiModel userProfile)
-        {
-            // Get user claims
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-
-            // If we have no user return Unauthorized
-            if (user == null)
-                // Return error
-                return Unauthorized();
-
-            user.FirstName = userProfile.FirstName;
-            user.LastName = userProfile.LastName;
-
-            var result = await _userManager.UpdateAsync(user);
-
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-
-            return StatusCode(500);
         }
 
         [Route(Routes.LogIn)]
@@ -255,6 +179,86 @@ namespace Euro.API.Controllers
                     Errors = result.Errors.ParseErrors()
                 });
             }
+        }
+
+        [Route(Routes.Test)]
+        public ActionResult Test([FromBody] Test test)
+        {
+            return Ok(test);
+        }
+
+        [Route(Routes.UpdateUserProfile)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> UpdateProfileAsync([FromBody] UserProfileDetailsApiModel userProfile)
+        {
+            // Get user claims
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            // If we have no user return Unauthorized
+            if (user == null)
+                // Return error
+                return Unauthorized();
+
+            user.FirstName = userProfile.FirstName;
+            user.LastName = userProfile.LastName;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return StatusCode(500);
+        }
+
+        [HttpPost]
+        [Route(Routes.UploadImage)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> UploadImage(IFormFile file)
+        {
+            var user = await GetCurrentUserAsync();
+
+            // If we have no user...
+            if (user == null)
+                // Return error
+                return Unauthorized("User not found");
+
+            var extension = Path.GetExtension(file.FileName).ToLower();
+
+            if (!extension.Equals(".png") && !extension.Equals(".bmp") && !extension.Equals(".jpg"))
+                return BadRequest("Image format not allowed");
+
+            if (file.Length > 0)
+            {
+                try
+                {
+                    var uploadFolder = $"{_environment.WebRootPath}\\uploads\\{user.Id}";
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+
+                    using var fileStream = System.IO.File.Create($"{uploadFolder}\\profile{Path.GetExtension(file.FileName)}");
+
+                    await file.CopyToAsync(fileStream);
+
+                    fileStream.Flush();
+
+                    return Ok($"File successfully uploaded");
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, ex.Message);
+                }
+            }
+
+            return StatusCode(500, "Failure");
+        }
+
+        private Task<ApplicationUser> GetCurrentUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
         }
     }
 }
