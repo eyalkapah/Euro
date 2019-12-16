@@ -36,7 +36,32 @@ namespace Euro.API.Controllers
             _environment = environment;
         }
 
-        [Route(Routes.Auth)]
+        [HttpGet]
+        [Route(Routes.GetProfileImage)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> GetProfileImage()
+        {
+            var user = await GetCurrentUserAsync();
+
+            // If we have no user...
+            if (user == null)
+                // Return error
+                return Unauthorized("User not found");
+
+            var path = $"{_environment.WebRootPath}\\uploads\\{user.Id}\\profile.jpg";
+
+            if (!System.IO.File.Exists(path))
+            {
+                return NotFound();
+            }
+
+            var image = System.IO.File.OpenRead(path);
+
+            return File(image, "image/jpeg");
+        }
+
+        [HttpPost]
+        [Route(Routes.UploadImage)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Auth()
         {

@@ -21,5 +21,7 @@ namespace Euro.Shared
         public const string Register = "api/register";
 
         public const string UploadImage = "api/user/image";
+
+        public const string GetProfileImage = "api/user/image";
     }
 }
