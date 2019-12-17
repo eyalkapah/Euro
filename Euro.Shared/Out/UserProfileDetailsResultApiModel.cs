@@ -15,5 +15,8 @@ namespace Euro.Shared.Out
 
         [JsonPropertyName("last_name")]
         public string LastName { get; set; }
+
+        [JsonPropertyName("profile_image")]
+        public string ProfileImage { get; set; }
     }
 }

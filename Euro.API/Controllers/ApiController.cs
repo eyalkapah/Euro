@@ -48,20 +48,29 @@ namespace Euro.API.Controllers
                 // Return error
                 return Unauthorized("User not found");
 
-            var path = $"{_environment.WebRootPath}\\uploads\\{user.Id}\\profile.jpg";
+            var path = Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles", user.Id, "profile.jpg");
 
             if (!System.IO.File.Exists(path))
             {
                 return NotFound();
             }
 
-            var image = System.IO.File.OpenRead(path);
+            return Ok(Path.Combine("StaticFiles", user.Id, "profile.jpg"));
 
-            return File(image, "image/jpeg");
+            //var path = $"{_environment.WebRootPath}\\uploads\\{user.Id}\\profile.jpg";
+
+            //if (!System.IO.File.Exists(path))
+            //{
+            //    return NotFound();
+            //}
+
+            //var image = System.IO.File.OpenRead(path);
+
+            //return File(image, "image/jpeg");
         }
 
-        [HttpPost]
-        [Route(Routes.UploadImage)]
+        [HttpGet]
+        [Route(Routes.Auth)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Auth()
         {
