@@ -102,6 +102,12 @@ namespace Euro.API.Controllers
                     Error = "User not found"
                 };
 
+            var profileIamgePath = string.Empty;
+            if (!string.IsNullOrWhiteSpace(user.ProfileImage))
+            {
+                profileIamgePath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles", user.Id, user.ProfileImage);
+            }
+
             // Return token to user
             return new GeneralApiResponse<UserProfileDetailsResultApiModel>
             {
@@ -110,6 +116,9 @@ namespace Euro.API.Controllers
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    ProfileImage = System.IO.File.Exists(profileIamgePath)
+                    ? Path.Combine("StaticFiles", user.Id, user.ProfileImage)
+                    : null,
                     Email = user.Email
                 }
             };
@@ -267,19 +276,32 @@ namespace Euro.API.Controllers
             {
                 try
                 {
-                    var uploadFolder = $"{_environment.WebRootPath}\\uploads\\{user.Id}";
+                    var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles", user.Id);
+
+                    //var uploadFolder = $"{_environment.WebRootPath}\\uploads\\{user.Id}";
                     if (!Directory.Exists(uploadFolder))
                     {
                         Directory.CreateDirectory(uploadFolder);
                     }
 
-                    using var fileStream = System.IO.File.Create($"{uploadFolder}\\profile{Path.GetExtension(file.FileName)}");
+                    var filename = $"profile{Path.GetExtension(file.FileName)}";
+
+                    using var fileStream = System.IO.File.Create($"{uploadFolder}\\{filename}");
 
                     await file.CopyToAsync(fileStream);
 
                     fileStream.Flush();
 
-                    return Ok($"File successfully uploaded");
+                    user.ProfileImage = Path.Combine("StaticFiles", user.Id, filename);
+
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        return Ok(user.ProfileImage);
+                    }
+
+                    return StatusCode(500, "Failed to save image");
                 }
                 catch (Exception ex)
                 {
