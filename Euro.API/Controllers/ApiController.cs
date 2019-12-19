@@ -116,9 +116,9 @@ namespace Euro.API.Controllers
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    ProfileImage = System.IO.File.Exists(profileIamgePath)
-                    ? Path.Combine("StaticFiles", user.Id, user.ProfileImage)
-                    : null,
+                    ProfileImage = string.IsNullOrEmpty(profileIamgePath)
+                    ? null
+                    : user.ProfileImage,
                     Email = user.Email
                 }
             };
@@ -298,7 +298,10 @@ namespace Euro.API.Controllers
 
                     if (result.Succeeded)
                     {
-                        return Ok(user.ProfileImage);
+                        return Ok(new UploadImageResultApiModel
+                        {
+                            ImagePath = user.ProfileImage
+                        });
                     }
 
                     return StatusCode(500, "Failed to save image");
