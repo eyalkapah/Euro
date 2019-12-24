@@ -14,6 +14,9 @@ namespace Euro.Context.Configurations
                 .IsRequired()
                 .HasMaxLength(64);
 
+            builder.Property(p => p.FlagImage)
+                .HasMaxLength(32);
+
             builder.HasOne(x => x.Group)
                 .WithMany(p => p.Teams)
                 .HasForeignKey(d => d.GroupId)

@@ -23,5 +23,11 @@ namespace Euro.Shared
         public const string UploadImage = "api/user/image";
 
         public const string GetProfileImage = "api/user/image";
+
+        public const string GetAllTeams = "api/teams";
+
+        public const string GetTeam = "api/teams";
+
+        public const string GetGroup = "api/teams/group";
     }
 }

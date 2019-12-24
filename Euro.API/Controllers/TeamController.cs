@@ -2,6 +2,7 @@
 using Euro.Data;
 using Euro.Domain;
 using Euro.Domain.ApiModels;
+using Euro.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace Euro.API.Controllers
 {
-    [Route("api/[controller]")]
     //[EnableCors("CorsPolicy")]
-    [ApiController]
-    public class TeamController : BaseController<Team, TeamApiModel>
+
+    //[ApiController]
+    public class TeamController : BaseController<Team, TeamResultApiModel>
     {
         public TeamController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
@@ -22,6 +23,7 @@ namespace Euro.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Route(Routes.GetTeam)]
         public new Task<ActionResult> Delete(int id, CancellationToken token = default)
         {
             return base.Delete(id, token);
@@ -29,22 +31,25 @@ namespace Euro.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Produces(typeof(List<TeamApiModel>))]
-        public new Task<ActionResult<IEnumerable<TeamApiModel>>> Get(CancellationToken token = default)
+        [Route(Routes.GetAllTeams)]
+        [Produces(typeof(List<TeamResultApiModel>))]
+        public new Task<ActionResult<IEnumerable<TeamResultApiModel>>> Get(CancellationToken token = default)
         {
             return base.Get(token);
         }
 
+        [Route(Routes.GetTeam)]
         [HttpGet("{id}", Name = "GetTeam")]
-        [Produces(typeof(TeamApiModel))]
-        public new Task<ActionResult<TeamApiModel>> Get(int id, CancellationToken token = default)
+        [Produces(typeof(TeamResultApiModel))]
+        public new Task<ActionResult<TeamResultApiModel>> Get(int id, CancellationToken token = default)
         {
             return base.Get(id, token);
         }
 
+        [Route(Routes.GetGroup)]
         [HttpGet("group/{id}")]
-        [Produces(typeof(List<TeamApiModel>))]
-        public async Task<ActionResult<TeamApiModel>> GetByTeamId(int id, CancellationToken token = default)
+        [Produces(typeof(List<TeamResultApiModel>))]
+        public async Task<ActionResult<TeamResultApiModel>> GetByTeamId(int id, CancellationToken token = default)
         {
             try
             {
@@ -55,7 +60,7 @@ namespace Euro.API.Controllers
 
                 var teams = await UnitOfWork.Teams.GetTeamsByGroupIdAsync(token, group.GroupId);
 
-                var apiModel = Mapper.Map<IEnumerable<TeamApiModel>>(teams);
+                var apiModel = Mapper.Map<IEnumerable<TeamResultApiModel>>(teams);
 
                 return Ok(apiModel);
             }
@@ -66,20 +71,22 @@ namespace Euro.API.Controllers
         }
 
         [HttpPost]
-        public new async Task<ActionResult<TeamApiModel>> Post([FromBody] TeamApiModel input, CancellationToken token = default)
+        [Route(Routes.GetTeam)]
+        public new async Task<ActionResult<TeamResultApiModel>> Post([FromBody] TeamResultApiModel input, CancellationToken token = default)
         {
             var output = await base.Post(input, token);
 
             if (output is OkObjectResult okResult)
             {
-                return CreatedAtRoute("GetTeam", new { id = ((TeamApiModel)okResult.Value).TeamId }, okResult.Value);
+                return CreatedAtRoute("GetTeam", new { id = ((TeamResultApiModel)okResult.Value).TeamId }, okResult.Value);
             }
 
             return output;
         }
 
         [HttpPut("{id}")]
-        public new async Task<ActionResult<TeamApiModel>> Put(int id, [FromBody] TeamApiModel input, CancellationToken token = default)
+        [Route(Routes.GetTeam)]
+        public new async Task<ActionResult<TeamResultApiModel>> Put(int id, [FromBody] TeamResultApiModel input, CancellationToken token = default)
         {
             var output = await base.Put(id, input, token);
 
