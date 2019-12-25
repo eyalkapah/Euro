@@ -2,6 +2,7 @@
 using Euro.Data;
 using Euro.Domain;
 using Euro.Domain.ApiModels;
+using Euro.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Euro.API.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     //[EnableCors("CorsPolicy")]
-    [ApiController]
+    //[ApiController]
     public class MatchController : BaseController<Match, MatchApiModel>
     {
         public MatchController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
@@ -23,12 +24,14 @@ namespace Euro.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Route(Routes.GetMatch)]
         public new Task<ActionResult> Delete(int id, CancellationToken token = default)
         {
             return base.Delete(id, token);
         }
 
         [HttpGet]
+        [Route(Routes.GetAllMatches)]
         [Produces(typeof(List<MatchApiModel>))]
         public new Task<ActionResult<IEnumerable<MatchApiModel>>> Get(CancellationToken token = default)
         {
@@ -36,6 +39,7 @@ namespace Euro.API.Controllers
         }
 
         [HttpGet("{id}", Name = "GetMatch")]
+        [Route(Routes.GetMatch)]
         [Produces(typeof(MatchApiModel))]
         public new Task<ActionResult<MatchApiModel>> Get(int id, CancellationToken token = default)
         {
@@ -43,6 +47,7 @@ namespace Euro.API.Controllers
         }
 
         [HttpGet("team/{id}")]
+        [Route(Routes.GetMatchByTeam)]
         [Produces(typeof(MatchApiModel))]
         public async Task<ActionResult<MatchApiModel>> GetByTeamId(int id, CancellationToken token = default)
         {
@@ -61,6 +66,7 @@ namespace Euro.API.Controllers
         }
 
         [HttpPost]
+        [Route(Routes.GetMatch)]
         public new async Task<ActionResult<MatchApiModel>> Post([FromBody] MatchApiModel input, CancellationToken token = default)
         {
             var output = await base.Post(input, token);
@@ -74,6 +80,7 @@ namespace Euro.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Route(Routes.GetMatch)]
         public new async Task<ActionResult<MatchApiModel>> Put(int id, [FromBody] MatchApiModel input, CancellationToken token = default)
         {
             var output = await base.Put(id, input, token);

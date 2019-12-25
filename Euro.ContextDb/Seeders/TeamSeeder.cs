@@ -11,181 +11,211 @@ namespace Euro.ContextDb.Seeders
             {
                 TeamId = 1,
                 Name = "England",
-                GroupId = 1
+                GroupId = 1,
+                FlagImage = "eng.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 2,
                 Name = "Chech Republic",
-                GroupId = 1
+                GroupId = 1,
+                FlagImage = "cze.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 3,
                 Name = "Bulgaria",
-                GroupId = 1
+                GroupId = 1,
+                FlagImage = "bul.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 4,
                 Name = "Montenegro",
-                GroupId = 1
+                GroupId = 1,
+                FlagImage = "mne.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 5,
                 Name = "Kosovo",
-                GroupId = 1
+                GroupId = 1,
+                FlagImage = "kos.png"
             });
 
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 6,
                 Name = "Kazakhstan",
-                GroupId = 9
+                GroupId = 9,
+                FlagImage = "kaz.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 7,
                 Name = "Scotland",
-                GroupId = 9
+                GroupId = 9,
+                FlagImage = "sco.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 8,
                 Name = "Cyprus",
-                GroupId = 9
-            }); builder.Entity<Team>().HasData(new Team
+                GroupId = 9,
+                FlagImage = "cyp.png"
+            });
+            builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 9,
                 Name = "San Marino",
-                GroupId = 9
+                GroupId = 9,
+                FlagImage = "smr.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 10,
                 Name = "Northern Ireland",
-                GroupId = 3
+                GroupId = 3,
+                FlagImage = "nir.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 11,
                 Name = "Estonia",
-                GroupId = 3
+                GroupId = 3,
+                FlagImage = "est.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 12,
                 Name = "Netherlands",
-                GroupId = 3
+                GroupId = 3,
+                FlagImage = "ned.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 13,
                 Name = "Belarus",
-                GroupId = 3
+                GroupId = 3,
+                FlagImage = "blr.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 14,
                 Name = "Slovkia",
-                GroupId = 5
+                GroupId = 5,
+                FlagImage = "svk.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 15,
                 Name = "Hungary",
-                GroupId = 5
+                GroupId = 5,
+                FlagImage = "hun.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 16,
                 Name = "Croatia",
-                GroupId = 5
+                GroupId = 5,
+                FlagImage = "cro.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 17,
                 Name = "Azerbaijan",
-                GroupId = 5
+                GroupId = 5,
+                FlagImage = "aze.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 18,
                 Name = "Israel",
-                GroupId = 7
+                GroupId = 7,
+                FlagImage = "isr.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 19,
                 Name = "Slovenia",
-                GroupId = 7
+                GroupId = 7,
+                FlagImage = "svn.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 20,
                 Name = "North Macedonia",
-                GroupId = 7
+                GroupId = 7,
+                FlagImage = "mkd.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 21,
                 Name = "Latvia",
-                GroupId = 7
+                GroupId = 7,
+                FlagImage = "lva.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 22,
                 Name = "Austria",
-                GroupId = 7
+                GroupId = 7,
+                FlagImage = "aut.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 23,
                 Name = "Poland",
-                GroupId = 7
+                GroupId = 7,
+                FlagImage = "pol.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 24,
                 Name = "Belgium",
-                GroupId = 9
+                GroupId = 9,
+                FlagImage = "bel.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 25,
                 Name = "Russia",
-                GroupId = 9
+                GroupId = 9,
+                FlagImage = "rus.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 26,
                 Name = "Portugal",
-                GroupId = 2
+                GroupId = 2,
+                FlagImage = "por.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 27,
                 Name = "Ukraine",
-                GroupId = 2
+                GroupId = 2,
+                FlagImage = "ukr.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 28,
                 Name = "Luxembourg",
-                GroupId = 2
+                GroupId = 2,
+                FlagImage = "lux.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 29,
                 Name = "Lithuania",
-                GroupId = 2
+                GroupId = 2,
+                FlagImage = "ltu.png"
             });
             builder.Entity<Team>().HasData(new Team
             {
                 TeamId = 30,
                 Name = "Moldova",
-                GroupId = 8
+                GroupId = 8,
             });
             builder.Entity<Team>().HasData(new Team
             {

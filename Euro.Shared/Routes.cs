@@ -29,5 +29,11 @@ namespace Euro.Shared
         public const string GetTeam = "api/teams";
 
         public const string GetGroup = "api/teams/group";
+
+        public const string GetAllMatches = "api/matches";
+
+        public const string GetMatch = "api/matches";
+
+        public const string GetMatchByTeam = "api/matches/team";
     }
 }
