@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Euro.Data;
 using Euro.Domain;
-using Euro.Domain.ApiModels;
+using Euro.Shared.In;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -66,11 +66,11 @@ namespace Euro.API.Controllers
         [HttpPost]
         public new async Task<ActionResult<GroupApiModel>> Post([FromBody] GroupApiModel input, CancellationToken token = default)
         {
-            var output = await base.Post(input, token);
+            var output = await base.Post<GroupResultApiModel>(input, token);
 
             if (output is OkObjectResult okResult)
             {
-                return CreatedAtRoute("GetGroup", new { id = ((GroupApiModel)okResult.Value).GroupId }, okResult.Value);
+                return CreatedAtRoute("GetGroup", new { id = ((GroupResultApiModel)okResult.Value).GroupId }, okResult.Value);
             }
 
             return output;

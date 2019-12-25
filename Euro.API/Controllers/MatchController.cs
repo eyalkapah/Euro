@@ -3,6 +3,7 @@ using Euro.Data;
 using Euro.Domain;
 using Euro.Domain.ApiModels;
 using Euro.Shared;
+using Euro.Shared.Out;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -69,11 +70,11 @@ namespace Euro.API.Controllers
         [Route(Routes.GetMatch)]
         public new async Task<ActionResult<MatchApiModel>> Post([FromBody] MatchApiModel input, CancellationToken token = default)
         {
-            var output = await base.Post(input, token);
+            var output = await base.Post<MatchResultApiModel>(input, token);
 
             if (output is OkObjectResult okResult)
             {
-                return CreatedAtRoute("GetMatch", new { id = ((MatchApiModel)okResult.Value).MatchId }, okResult.Value);
+                return CreatedAtRoute("GetMatch", new { id = ((MatchResultApiModel)okResult.Value).MatchId }, okResult.Value);
             }
 
             return output;

@@ -79,7 +79,7 @@ namespace Euro.API.Controllers
             }
         }
 
-        public async Task<ObjectResult> Post([FromBody] TEntityApiModel input, CancellationToken token = default)
+        public async Task<ObjectResult> Post<TEntityResult>([FromBody] TEntityApiModel input, CancellationToken token = default)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace Euro.API.Controllers
 
                 await SaveAsync(token);
 
-                var output = Mapper.Map<TEntityApiModel>(entity);
+                var output = Mapper.Map<TEntityResult>(entity);
 
                 return Ok(output);
             }

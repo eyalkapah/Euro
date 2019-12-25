@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Euro.Domain;
 using Euro.Domain.ApiModels;
+using Euro.Shared.In;
+using Euro.Shared.Out;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +15,10 @@ namespace Euro.API.Configurations
     {
         public MappingProfile()
         {
-            CreateMap<Group, GroupApiModel>().ReverseMap();
-            CreateMap<Team, TeamResultApiModel>().ReverseMap();
+            CreateMap<Group, GroupResultApiModel>().ReverseMap();
+            CreateMap<Team, TeamApiModel>().ReverseMap();
             CreateMap<Match, MatchApiModel>().ReverseMap();
+            CreateMap<Match, MatchResultApiModel>().ReverseMap();
         }
     }
 }
