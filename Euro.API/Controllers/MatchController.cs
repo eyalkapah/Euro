@@ -17,7 +17,7 @@ namespace Euro.API.Controllers
     //[Route("api/[controller]")]
     //[EnableCors("CorsPolicy")]
     //[ApiController]
-    public class MatchController : BaseController<Match, MatchApiModel>
+    public class MatchController : BaseController<Match, MatchApiModel, MatchResultApiModel>
     {
         public MatchController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
@@ -25,22 +25,22 @@ namespace Euro.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Route(Routes.GetMatch)]
+        [Route(Routes.Matches)]
         public new Task<ActionResult> Delete(int id, CancellationToken token = default)
         {
             return base.Delete(id, token);
         }
 
         [HttpGet]
-        [Route(Routes.GetAllMatches)]
+        [Route(Routes.Matches)]
         [Produces(typeof(List<MatchApiModel>))]
-        public new Task<ActionResult<IEnumerable<MatchApiModel>>> Get(CancellationToken token = default)
+        public new Task<ActionResult<IEnumerable<MatchResultApiModel>>> Get(CancellationToken token = default)
         {
             return base.Get(token);
         }
 
         [HttpGet("{id}", Name = "GetMatch")]
-        [Route(Routes.GetMatch)]
+        [Route(Routes.Matches)]
         [Produces(typeof(MatchApiModel))]
         public new Task<ActionResult<MatchApiModel>> Get(int id, CancellationToken token = default)
         {
@@ -67,7 +67,7 @@ namespace Euro.API.Controllers
         }
 
         [HttpPost]
-        [Route(Routes.GetMatch)]
+        [Route(Routes.Matches)]
         public new async Task<ActionResult<MatchApiModel>> Post([FromBody] MatchApiModel input, CancellationToken token = default)
         {
             var output = await base.Post<MatchResultApiModel>(input, token);
@@ -81,7 +81,7 @@ namespace Euro.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Route(Routes.GetMatch)]
+        [Route(Routes.Matches)]
         public new async Task<ActionResult<MatchApiModel>> Put(int id, [FromBody] MatchApiModel input, CancellationToken token = default)
         {
             var output = await base.Put(id, input, token);

@@ -57,6 +57,26 @@ namespace Euro.ContextDb.Seeders
                 GroupId = 10,
                 Name = "J"
             });
+            builder.Entity<Group>().HasData(new Group
+            {
+                GroupId = 11,
+                Name = "Round of 16"
+            });
+            builder.Entity<Group>().HasData(new Group
+            {
+                GroupId = 12,
+                Name = "Quaterfinal"
+            });
+            builder.Entity<Group>().HasData(new Group
+            {
+                GroupId = 13,
+                Name = "Semifinal"
+            });
+            builder.Entity<Group>().HasData(new Group
+            {
+                GroupId = 14,
+                Name = "Final"
+            });
         }
     }
 }

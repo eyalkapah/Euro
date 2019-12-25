@@ -16,7 +16,7 @@ namespace Euro.API.Controllers
     //[EnableCors("CorsPolicy")]
 
     //[ApiController]
-    public class TeamController : BaseController<Team, TeamApiModel>
+    public class TeamController : BaseController<Team, TeamApiModel, TeamResultApiModel>
     {
         public TeamController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
@@ -34,7 +34,7 @@ namespace Euro.API.Controllers
         [AllowAnonymous]
         [Route(Routes.GetAllTeams)]
         [Produces(typeof(List<TeamApiModel>))]
-        public new Task<ActionResult<IEnumerable<TeamApiModel>>> Get(CancellationToken token = default)
+        public new Task<ActionResult<IEnumerable<TeamResultApiModel>>> Get(CancellationToken token = default)
         {
             return base.Get(token);
         }

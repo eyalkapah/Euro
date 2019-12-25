@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Euro.API.Controllers
 {
-    public abstract class BaseController<TEntity, TEntityApiModel> : ControllerBase where TEntity : class
+    public abstract class BaseController<TEntity, TEntityApiModel, TEntityResultApiModel> : ControllerBase where TEntity : class
     {
         public IMapper Mapper { get; }
 
@@ -43,13 +43,13 @@ namespace Euro.API.Controllers
             }
         }
 
-        public async Task<ActionResult<IEnumerable<TEntityApiModel>>> Get(CancellationToken token = default)
+        public async Task<ActionResult<IEnumerable<TEntityResultApiModel>>> Get(CancellationToken token = default)
         {
             try
             {
                 var entities = await Repository.GetAllAsync(token);
 
-                var apiModels = Mapper.Map<IEnumerable<TEntityApiModel>>(entities);
+                var apiModels = Mapper.Map<IEnumerable<TEntityResultApiModel>>(entities);
 
                 return Ok(apiModels);
             }
