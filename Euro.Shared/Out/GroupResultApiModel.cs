@@ -9,6 +9,9 @@ namespace Euro.Shared.In
         [JsonPropertyName("group_id")]
         public int GroupId { get; set; }
 
+        [JsonPropertyName("is_group_level")]
+        public bool IsGroupLevel { get; set; }
+
         //[MaxLength(1)]
         //[Required]
         [JsonPropertyName("name")]

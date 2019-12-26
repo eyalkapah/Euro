@@ -10,52 +10,62 @@ namespace Euro.ContextDb.Seeders
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 1,
-                Name = "A"
+                Name = "A",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 2,
-                Name = "B"
+                Name = "B",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 3,
-                Name = "C"
+                Name = "C",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 4,
-                Name = "D"
+                Name = "D",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 5,
-                Name = "E"
+                Name = "E",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 6,
-                Name = "F"
+                Name = "F",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 7,
-                Name = "G"
+                Name = "G",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 8,
-                Name = "H"
+                Name = "H",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 9,
-                Name = "I"
+                Name = "I",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {
                 GroupId = 10,
-                Name = "J"
+                Name = "J",
+                IsGroupLevel = true
             });
             builder.Entity<Group>().HasData(new Group
             {

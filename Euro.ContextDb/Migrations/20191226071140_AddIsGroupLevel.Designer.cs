@@ -4,14 +4,16 @@ using Euro.ContextDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Euro.ContextDb.Migrations
 {
     [DbContext(typeof(EuroContext))]
-    partial class EuroContextModelSnapshot : ModelSnapshot
+    [Migration("20191226071140_AddIsGroupLevel")]
+    partial class AddIsGroupLevel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

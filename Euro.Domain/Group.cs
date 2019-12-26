@@ -10,6 +10,8 @@ namespace Euro.Domain
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GroupId { get; set; }
 
+        public bool IsGroupLevel { get; set; }
+
         [NotMapped]
         public ICollection<Match> Matches { get; set; } = new HashSet<Match>();
 
